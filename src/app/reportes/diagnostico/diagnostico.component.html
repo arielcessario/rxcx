@@ -1,0 +1,13 @@
+<div class="row">
+
+  <div class="dropdown ghost-dropdown" ngbDropdown style="margin-right: 10px;">
+    <button class="btn btn-primary" type="button" ngbDropdownToggle>
+      {{selectedDiagnostico['nombre']}}
+    </button>
+    <ul class="dropdown-menu" ngbDropdownMenu>
+      <li class="dropdown-item" (click)='selectedDiagnostico = u;' *ngFor="let u of diagnosticos">{{u.nombre}}</li>
+    </ul>
+  </div>
+
+  <button class="btn btn-primary" type="button" (click)="generarReporte()">Generar Reporte</button>
+</div>

@@ -1,0 +1,57 @@
+<!-- <nav class="fixed">
+    <div class="header-container left">
+
+        <app-logout></app-logout>
+        <a class="navigation">
+            <i class="menu-icon nb-menu"></i>
+        </a> -->
+
+<!-- <button (click)="changeTheme()">Cambiar Tema</button> -->
+<!-- </div>
+</nav> -->
+
+<div class="header-container" [class.left]="position === 'normal'" [class.right]="position === 'inverse'">
+  <div class="logo-containter">
+    <a (click)="toggleSidebar()" class="navigation">
+      <i class="nb-menu"></i>
+    </a>
+    <!-- <div class="logo" (click)="goToHome()" [style.backgroundImage]="'url(./assets/images/logoMevaterapia.jpg)'"> -->
+    <div style="width:95px;
+      height:60px;
+      border-radius: 10px 5px;
+      overflow:hidden;
+      margin-left: 20px;">
+
+      <img class="logo" (click)="goToHome()" [src]="'./assets/images/logoMevaterapia.jpg'" style="max-height: 60px;">
+    </div>
+
+    <!-- <span>Admin</span> -->
+    <!-- </img> -->
+  </div>
+  <!-- <ngx-theme-switcher></ngx-theme-switcher> -->
+</div>
+
+<nb-actions style="justify-content:flex-end;" size="medium" class="header-container" [class.right]="position === 'normal'"
+  [class.left]="position === 'inverse'">
+  <!-- <nb-action icon="nb-grid-b" class="toggle-layout" (click)="toggleSettings()"></nb-action> -->
+  <nb-action>
+    <nb-user (click)="goToPerfil()"  [name]="user?.displayName || user?.email" [picture]="user?.photoURL"></nb-user>
+  </nb-action>
+  <nb-action>
+    <!-- <button class="btn btn-outline-secondary" (click)="changeTheme()">Cambiar Tema</button> -->
+    <i class="nb-grid-a fa-3x" (click)="changeTheme()" title="Cambiar Tema"></i>
+  </nb-action>
+
+
+
+  <!-- <nb-action class="control-item" disabled icon="nb-notifications"></nb-action>
+  <nb-action class="control-item" icon="nb-email"></nb-action>
+  <nb-action class="control-item">
+    <nb-search type="rotate-layout" (click)="startSearch()"></nb-search>
+  </nb-action> -->
+  <!-- <nb-action class="control-item" icon="nb-email"></nb-action> -->
+
+  <nb-action>
+    <app-logout></app-logout>
+  </nb-action>
+</nb-actions>

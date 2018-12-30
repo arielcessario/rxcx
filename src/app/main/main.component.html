@@ -1,0 +1,30 @@
+<nb-card>
+  <nb-card-header>
+    Revisión de 3 Meses
+  </nb-card-header>
+  <nb-card-body>
+    <div class="paciente row" *ngFor="let paciente of _3M">
+      <h5 class="col-sm-12 col-form-label text-heading" for="inputLastName" (click)="goToPaciente(paciente.uid)">{{paciente.hc}} - {{paciente.nombre}} {{paciente.apellido}}</h5>
+    </div>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-header>
+    Revisión de 6 Meses
+  </nb-card-header>
+  <nb-card-body>
+    <div class="paciente row" *ngFor="let paciente of _6M">
+      <h5 class="col-sm-12 col-form-label text-heading" for="inputLastName" (click)="goToPaciente(paciente.uid)">{{paciente.hc}} - {{paciente.nombre}} {{paciente.apellido}}</h5>
+    </div>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-header>
+    Revisión de 9 Meses
+  </nb-card-header>
+  <nb-card-body>
+    <div class="paciente row" *ngFor="let paciente of _9M">
+      <h5 class="col-sm-12 col-form-label text-heading" for="inputLastName" (click)="goToPaciente(paciente.uid)">{{paciente.hc}} - {{paciente.nombre}} {{paciente.apellido}}</h5>
+    </div>
+  </nb-card-body>
+</nb-card>

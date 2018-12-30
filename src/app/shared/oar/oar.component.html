@@ -1,0 +1,503 @@
+<nb-card>
+  <nb-card-header (click)="open = !open"
+    >OAR
+    <i
+      class="fa fa-eye fa-3 pull-right"
+      aria-hidden="true"
+      *ngIf="!open"
+      title="Mostrar detalle"
+    ></i>
+    <i
+      class="fa fa-eye-slash fa-3 pull-right"
+      aria-hidden="true"
+      *ngIf="open"
+      title="Oculatar detalle"
+    ></i>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form
+      [formGroup]="formOAR"
+      style="max-width:98%;"
+      *ngIf="formOAR"
+      appCollapse
+      [isOpen]="open"
+    >
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <h5 class="col-sm-12 col-form-label text-heading" for="oar">
+              Descripción
+            </h5>
+            <!--
+              <input type="text" class="form-control" id="oar" placeholder="Descripción" formControlName="oar" [ngClass]="{'form-control-danger': formOAR.controls['oar'].invalid}">
+            -->
+            <input
+              type="text"
+              class="form-control"
+              id="oar"
+              placeholder="Descripción"
+              formControlName="oar_name"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- Toxicidad -->
+
+      <div class="form-group row">
+        <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
+          Toxicidad Aguda
+        </h5>
+        <div class="form-group col-sm-2">
+          <rxc-switcher
+            [value]="toxicidadAguda || 0"
+            [firstValue]="1"
+            [secondValue]="0"
+            [firstValueLabel]="'Si'"
+            [secondValueLabel]="'No'"
+            (valueChange)="toxicidadAguda = $event"
+          ></rxc-switcher>
+        </div>
+        <div class="form-group col-sm-7 ">
+          <textarea
+            class="form-control"
+            rows="1"
+            formControlName="toxicidadAgudaDescr"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
+          Toxicidad Crónica
+        </h5>
+        <div class="form-group col-sm-2">
+          <rxc-switcher
+            [value]="toxicidadCronica || 0"
+            [firstValue]="1"
+            [secondValue]="0"
+            [firstValueLabel]="'Si'"
+            [secondValueLabel]="'No'"
+            (valueChange)="toxicidadCronica = $event"
+          ></rxc-switcher>
+        </div>
+        <div class="form-group col-sm-7 ">
+          <textarea
+            class="form-control"
+            rows="1"
+            formControlName="toxicidadCronicaDescr"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- PARTES -->
+
+      <div class="row">
+        <div class="form-group col-sm-12 ">
+          <div class="form-control select-box">
+            <input
+              type="text"
+              [(ngModel)]="filterDiags"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Buscar..."
+            />
+            <div
+              *ngFor="
+                let d of (partes
+                  | fusejs: filterDiags:{ keys: ['organo'], threshold: 0.3 });
+                let i = index
+              "
+              (click)="addParte(d, i)"
+            >
+              {{ d.nombre }}
+            </div>
+            <!--
+              <div *ngFor="let d of diagnosticos; let i = index;" (click)="addDiagnostico(d, i)">{{d.name}}</div>
+            -->
+          </div>
+        </div>
+      </div>
+      <h5>Partes Seleccionadas</h5>
+      <div
+        class="form-group row"
+        *ngFor="let p of partes_seleccionadas; let i = index"
+      >
+        <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
+          {{ p.nombre }}
+        </h5>
+        <div class="form-group col-sm-2 row">
+          <div class="dropdown ghost-dropdown col-sm-8" ngbDropdown>
+            <button class="btn btn-primary" type="button" ngbDropdownToggle>
+              {{ p.volumenLimite }}
+            </button>
+            <ul class="dropdown-menu" ngbDropdownMenu>
+              <li
+                class="dropdown-item"
+                (click)="p.volumenLimite = l; checkConstraint(p)"
+                *ngFor="let l of p.volumenes"
+              >
+                {{ l }}
+              </li>
+            </ul>
+          </div>
+          <span class="col-sm-2" style="margin-top:10px;">cc</span>
+        </div>
+        <!--
+          <h5 for="inputFirstName" class="col-sm-1 col-form-label text-heading">cc</h5>
+        -->
+        <div class="form-group row col-sm-2">
+          <input
+            class="form-control col-sm-8"
+            rows="1"
+            [(ngModel)]="p.constraint"
+            (change)="checkConstraint(p)"
+            (keyup)="db()"
+            type="number"
+            [ngModelOptions]="{ standalone: true }"
+            [ngClass]="{ 'form-control-danger': p.endpoint }"
+          />
+          <span class="col-sm-2" style="margin-top:10px;">GY</span>
+        </div>
+        <!--
+          <h5 for="inputFirstName" class="col-sm-1 col-form-label text-heading">GY</h5>
+        -->
+        <h5 for="inputFirstName" class="col-sm-1 col-form-label text-heading">
+          Fracciones
+        </h5>
+        <div class="form-group col-sm-2">
+          <div class="dropdown ghost-dropdown" ngbDropdown>
+            <button class="btn btn-primary" type="button" ngbDropdownToggle>
+              {{ p.cantidad }}
+            </button>
+            <ul class="dropdown-menu" ngbDropdownMenu>
+              <li
+                class="dropdown-item"
+                (click)="p.cantidad = v.cantidad; checkConstraint(p)"
+                *ngFor="let v of volFracciones"
+              >
+                {{ v.cantidad }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <i class="fa nb-trash fa-3x" (click)="removeParte(p, i)"></i>
+        </div>
+        <span
+          *ngIf="p.endpoint"
+          for="inputFirstName"
+          class="col-sm-1"
+          style="color: red"
+          >{{ p.endpoint }}</span
+        >
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header (click)="openSeguimiento = !openSeguimiento"
+    >Seguimiento
+    <i
+      class="fa fa-eye fa-3 pull-right"
+      aria-hidden="true"
+      *ngIf="!openSeguimiento"
+      title="Mostrar detalle"
+    ></i>
+    <i
+      class="fa fa-eye-slash fa-3 pull-right"
+      aria-hidden="true"
+      *ngIf="openSeguimiento"
+      title="Oculatar detalle"
+    ></i>
+  </nb-card-header>
+  <nb-card-body>
+    <form
+      [formGroup]="formSeguimiento"
+      style="max-width:98%;"
+      appCollapse
+      [isOpen]="openSeguimiento"
+    >
+      <h4>Seguimiento imagenologico</h4>
+
+      <div class="form-group row">
+        <h5 for="inputFirstName" class="col-sm-2 col-form-label text-heading">
+          3 Meses
+        </h5>
+        <div class="switch form-group col-sm-4 col-xs-5">
+          <div class="col-sm-12 d-flex flex-row">
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico3M"
+                value="1"
+                name="seguimientoImagenologico3M"
+                checked
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">RC</span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico3M"
+                value="2"
+                name="seguimientoImagenologico3M"
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">RP</span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico3M"
+                value="3"
+                name="seguimientoImagenologico3M"
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">E</span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico3M"
+                value="4"
+                name="seguimientoImagenologico3M"
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">P</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group col-sm-6 col-xs-5 ">
+          <textarea
+            class="form-control"
+            rows="1"
+            formControlName="seguimientoImagenologico3MDescr"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-group d-flex flex-row col-sm-12">
+        <div
+          class="form-group col-sm-1 col-xs-12"
+          *ngFor="let img of [0, 1, 2, 3, 4]; let i = index"
+        >
+          <ac-upload
+            [img]="
+              imagenes['seguimientoImagenologico3MImg' + (i + 1)]
+                ? imagenes['seguimientoImagenologico3MImg' + (i + 1)]
+                : undefined
+            "
+            (status)="loadedImage($event, i, 'seguimientoImagenologico3M')"
+          ></ac-upload>
+          <h5
+            class="col-form-label text-heading"
+            style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+            for="nombre"
+            [title]="
+              imagenes['seguimientoImagenologico3MImg' + (i + 1)]
+                ? imagenes['seguimientoImagenologico3MImg' + (i + 1)]
+                : ''
+            "
+          >
+            {{
+              imagenes['seguimientoImagenologico3MImg' + (i + 1)]
+                ? imagenes['seguimientoImagenologico3MImg' + (i + 1)]
+                : ''
+            }}
+          </h5>
+        </div>
+      </div>
+      <div class="form-group row">
+        <h5 for="inputFirstName" class="col-sm-2 col-form-label text-heading">
+          6 Meses
+        </h5>
+        <div class="switch form-group col-sm-4">
+          <div class="col-sm-12 d-flex flex-row">
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico6M"
+                value="1"
+                name="seguimientoImagenologico6M"
+                checked
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">RC</span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico6M"
+                value="2"
+                name="seguimientoImagenologico6M"
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">RP</span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico6M"
+                value="3"
+                name="seguimientoImagenologico6M"
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">E</span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico6M"
+                value="4"
+                name="seguimientoImagenologico6M"
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">P</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group col-sm-6 ">
+          <textarea
+            class="form-control"
+            rows="1"
+            formControlName="seguimientoImagenologico6MDescr"
+          ></textarea>
+        </div>
+      </div>
+      <div class="form-group d-flex flex-row col-sm-12">
+        <div
+          class="form-group col-sm-1 col-xs-12"
+          *ngFor="let img of [0, 1, 2, 3, 4]; let i = index"
+        >
+          <ac-upload
+            [img]="
+              imagenes['seguimientoImagenologico6MImg' + (i + 1)]
+                ? imagenes['seguimientoImagenologico6MImg' + (i + 1)]
+                : undefined
+            "
+            (status)="loadedImage($event, i, 'seguimientoImagenologico6M')"
+          ></ac-upload>
+          <h5
+            class="col-form-label text-heading"
+            style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+            for="nombre"
+            [title]="
+              imagenes['seguimientoImagenologico6MImg' + (i + 1)]
+                ? imagenes['seguimientoImagenologico6MImg' + (i + 1)]
+                : ''
+            "
+          >
+            {{
+              imagenes['seguimientoImagenologico6MImg' + (i + 1)]
+                ? imagenes['seguimientoImagenologico6MImg' + (i + 1)]
+                : ''
+            }}
+          </h5>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <h5 for="inputFirstName" class="col-sm-2 col-form-label text-heading">
+          12 Meses
+        </h5>
+        <div class="switch form-group col-sm-4">
+          <div class="col-sm-12 d-flex flex-row">
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico12M"
+                value="1"
+                name="seguimientoImagenologico12M"
+                checked
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">RC</span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico12M"
+                value="2"
+                name="seguimientoImagenologico12M"
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">RP</span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico12M"
+                value="3"
+                name="seguimientoImagenologico12M"
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">E</span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                formControlName="seguimientoImagenologico12M"
+                value="4"
+                name="seguimientoImagenologico12M"
+              />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">P</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group col-sm-6 ">
+          <textarea
+            class="form-control"
+            rows="1"
+            formControlName="seguimientoImagenologico12MDescr"
+          ></textarea>
+        </div>
+      </div>
+      <div class="form-group d-flex flex-row col-sm-12">
+        <div
+          class="form-group col-sm-1 col-xs-12"
+          *ngFor="let img of [0, 1, 2, 3, 4]; let i = index"
+        >
+          <ac-upload
+            [img]="
+              imagenes['seguimientoImagenologico12MImg' + (i + 1)]
+                ? imagenes['seguimientoImagenologico12MImg' + (i + 1)]
+                : undefined
+            "
+            (status)="loadedImage($event, i, 'seguimientoImagenologico12M')"
+          ></ac-upload>
+          <h5
+            class="col-form-label text-heading"
+            style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+            for="nombre"
+            [title]="
+              imagenes['seguimientoImagenologico12MImg' + (i + 1)]
+                ? imagenes['seguimientoImagenologico12MImg' + (i + 1)]
+                : ''
+            "
+          >
+            {{
+              imagenes['seguimientoImagenologico12MImg' + (i + 1)]
+                ? imagenes['seguimientoImagenologico12MImg' + (i + 1)]
+                : ''
+            }}
+          </h5>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

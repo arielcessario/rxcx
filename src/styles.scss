@@ -1,0 +1,178 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~@nebular/theme/styles/globals';
+@import '~@nebular/theme/styles/prebuilt/corporate';
+@import '~@nebular/theme/styles/prebuilt/cosmic';
+@import '~@nebular/theme/styles/prebuilt/default';
+// ...
+@include nb-install() {
+    @include nb-theme-global();
+}
+
+// .form-control {
+//     height: 20px;
+// }
+select.form-control:not([size]):not([multiple]) {
+    height: calc(2.3rem + 2px) !important;
+    padding-bottom: 2px;
+    padding-top: 0;
+}
+
+.nb-theme-corporate .table-format,
+.nb-theme-corporate .table-format-no-hover,
+.nb-theme-default .table-format,
+.nb-theme-default .table-format-no-hover {
+    border: 2px solid #dadfe6;
+    .odd {
+        background-color: #f5f7fc;
+    }
+}
+
+.nb-theme-corporate .table-format .form-group:hover,
+.nb-theme-default .table-format .form-group:hover {
+    background-color: #e6f3ff !important;
+}
+
+.node-content-wrapper:hover {
+    background: #e6f3ff;
+}
+
+.nb-theme-cosmic .node-content-wrapper:hover {
+    background: #494299;
+}
+
+.node-content-wrapper-active,
+.node-content-wrapper.node-content-wrapper-active:hover,
+.node-content-wrapper-active.node-content-wrapper-focused {
+    background: #e6f3ff;
+    color: #4b4b4b;
+    font-weight: bold;
+}
+
+.nb-theme-cosmic .node-content-wrapper-active,
+.nb-theme-cosmic .node-content-wrapper.node-content-wrapper-active:hover,
+.nb-theme-cosmic .node-content-wrapper-active.node-content-wrapper-focused {
+    background: #494299;
+    color: #d1d1ff;
+    font-weight: bold;
+}
+
+// .nb-theme-cosmic .node-content-wrapper-active,
+// .nb-theme-cosmic .node-content-wrapper .node-content-wrapper-active:hover,
+// .nb-theme-cosmic .node-content-wrapper-active.node-content-wrapper-focused {
+//     background-color: #494299 !important;
+// }
+.nb-theme-cosmic .table-format,
+.nb-theme-cosmic .table-format-no-hover {
+    border: 2px solid #342e73;
+    background-color: #37317a;
+    .odd {
+        background-color: #3a347a;
+    }
+}
+
+.nb-theme-cosmic .table-format .form-group:hover {
+    background-color: #494299 !important;
+}
+
+.table-format {
+    .form-group {
+        padding: 0px 10px 5px 10px;
+        margin-bottom: 0px;
+        nb-checkbox {
+            label {
+                width: 100%;
+                cursor: pointer;
+            }
+        }
+    }
+    margin-bottom: 1.75em;
+    border-radius: 0.17rem;
+}
+
+.tooltip-danger {
+    .bs-tooltip-bottom .tooltip-inner {
+        background-color: #ff386a;
+        color: #fff;
+        max-width: 100%;
+    }
+    .bs-tooltip-bottom .arrow::before,
+    .bs-tooltip-auto[x-placement^='bottom'] .arrow::before {
+        border-top-color: #ff386a;
+        border-bottom-color: #ff386a;
+    }
+}
+
+agm-map {
+    height: 300px;
+}
+
+.select-box {
+    padding: 0.75rem 1.125rem;
+    border-radius: 0.5rem;
+    max-height: 120px;
+    min-height: 120px;
+    overflow-x: auto;
+    input {
+        background-color: transparent;
+        width: 100%;
+        border: 0 solid transparent;
+        border-bottom: 1px solid rgba(52, 46, 115, 0.4);
+        color: #fff;
+    }
+    div {
+        cursor: pointer;
+    }
+}
+
+.floating-menu {
+    position: fixed;
+    z-index: 1000;
+    right: 10px;
+    bottom: 10px;
+    width: 40px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.floating-menu #actions-menu {
+    position: absolute;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+    -webkit-transition: .5s;
+    transition: .5s;
+    bottom: 30px;
+    right: 0;
+}
+
+.floating-menu #actions-menu button {
+    border-radius: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    margin: 5px;
+    padding: 5px 9px !important;
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+    -webkit-transition: .5s;
+    transition: .5s;
+    text-align: center;
+    i{
+      font-size: 20px;
+    }
+}

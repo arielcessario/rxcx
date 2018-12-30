@@ -1,0 +1,15 @@
+<nb-card>
+  <nb-card-header>
+      Definiciones
+      <!-- <i class="fa fa-download" (click)="export()"></i> -->
+  </nb-card-header>
+
+  <nb-card-body>
+      <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" 
+      (create)="create()"
+      (edit)="update($event)" 
+      (delete)="onDeleteConfirm($event)"
+      (userRowSelect)="update($event)">
+      </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

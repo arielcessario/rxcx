@@ -1,0 +1,11 @@
+<nb-card>
+  <nb-card-header>
+    Endpoints
+    <!-- <i class="fa fa-download" (click)="export()"></i> -->
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (createConfirm)="create($event)" (editConfirm)="update($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

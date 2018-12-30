@@ -1,0 +1,14 @@
+<div class="demo-radio col-sm-12" *ngIf="rol < 8">
+  <div class="dropdown btn-group" ngbDropdown>
+    <button type="button" class="btn btn-primary">{{ roles[rol] }}</button>
+    <button type="button" class="btn btn-primary" ngbDropdownToggle></button>
+    <ul class="dropdown-menu" ngbDropdownMenu>
+      <li class="dropdown-item" (click)="rol = 0; updateRol()">Bloqueado</li>
+      <li class="dropdown-item" (click)="rol = 1; updateRol()">Recepción</li>
+      <li class="dropdown-item" (click)="rol = 4; updateRol()">Médico</li>
+      <li class="dropdown-item" (click)="rol = 7; updateRol()">
+        Administrador
+      </li>
+    </ul>
+  </div>
+</div>
