@@ -11,6 +11,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import { CoreService } from 'ac-core';
+import { RxCxProxy } from 'rxcx-core';
 
 @Component({
   selector: 'rxc-volumen',
@@ -39,6 +40,11 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
   _indiceHomogeneidad = 0;
   _indiceGradiente = 0;
   _indicePadick = 0;
+  partes = [];
+  partes_seleccionadas: Array<any> = [];
+  filterPartes = '';
+  filterDiags = '';
+  reglasOrganos = [];
 
   private fb: FormBuilder;
 
@@ -130,15 +136,28 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private coreService: CoreService,
     private volumenService: VolumenService,
-    private logger: Logger
+    private logger: Logger,
+    private rxcxProxy: RxCxProxy
   ) {}
 
   ngOnInit() {
     // console.log(this.volumen);
     // this.afs.firestore.settings({ timestampsInSnapshots: true });
 
+    this.rxcxProxy.getOrganos().subscribe(organos => {
+      this.partes = organos;
+      console.log(organos);
+
+      // if (this.oar) {
+      //   this.refreshPartes();
+      // }
+    });
+
+    this.rxcxProxy.getReglasOrganos().subscribe(reglas => {
+      this.reglasOrganos = reglas;
+    });
+
     this.saveSubs = this.volumenService.saveVolumen.subscribe(() => {
-      
       const vol = this.getVolumen();
       vol.volumen_id = this.volumen['volumen_id'];
       setTimeout(() => {
@@ -213,6 +232,59 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     return volumen;
+  }
+
+  addParte(d, i) {
+    const limitesVolumenes = [];
+
+    for (let z = 0; z < this.reglasOrganos.length; z++) {
+      if (d.organo_id === this.reglasOrganos[z].organo_id) {
+        limitesVolumenes.push(this.reglasOrganos[z].volumen);
+      }
+    }
+
+    setTimeout(() => {
+      const t = {
+        cantidad: this.formVolumen.get('cantidadFracciones').value,
+        constraint: 0,
+        organo_id: d.organo_id,
+        nombre: d.nombre,
+        volumenes: limitesVolumenes
+      };
+      this.partes_seleccionadas.push(t);
+    }, 0);
+  }
+
+  checkConstraint(p) {
+    const limitesVolumenes = [];
+    for (let i = 0; i < this.reglasOrganos.length; i++) {
+      if (
+        p.organo_id === this.reglasOrganos[i].organo_id &&
+        this.formVolumen.get('cantidadFracciones').value ===
+          this.reglasOrganos[i].fraccion
+      ) {
+        limitesVolumenes.push(this.reglasOrganos[i].constraint);
+      }
+    }
+
+    setTimeout(() => {
+      p.volumenes = limitesVolumenes;
+    }, 0);
+
+    p.endpoint = '';
+    for (let i = 0; i < this.reglasOrganos.length; i++) {
+      if (
+        this.reglasOrganos[i].organo_id === p.organo_id &&
+        this.reglasOrganos[i].fraccion === p.cantidad &&
+        this.reglasOrganos[i].constraint < p.constraint
+      ) {
+        p.endpoint = this.reglasOrganos[i].endpoint;
+      }
+    }
+  }
+
+  removeParte(d, i) {
+    this.partes_seleccionadas.splice(i, 1);
   }
 
   buildForm(form: FormGroup, group: any): FormGroup {

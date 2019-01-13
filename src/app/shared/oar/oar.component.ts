@@ -111,16 +111,16 @@ export class OarComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.rxcxProxy.getOrganos().subscribe(organos => {
-      this.partes = organos;
-      if (this.oar) {
-        this.refreshPartes();
-      }
-    });
+    // this.rxcxProxy.getOrganos().subscribe(organos => {
+    //   this.partes = organos;
+    //   if (this.oar) {
+    //     this.refreshPartes();
+    //   }
+    // });
 
-    this.rxcxProxy.getReglasOrganos().subscribe(reglas => {
-      this.reglasOrganos = reglas;
-    });
+    // this.rxcxProxy.getReglasOrganos().subscribe(reglas => {
+    //   this.reglasOrganos = reglas;
+    // });
 
     if (!this.seguimiento) {
       this.seguimiento = {};

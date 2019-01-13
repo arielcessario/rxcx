@@ -57,14 +57,20 @@
                 *ngFor="let img of [0, 1, 2]; let i = index"
               >
                 <ac-upload
-                  [img]="imagenes['img0' + (i + 1)] ? imagenes['img0' + (i + 1)] : undefined"
+                  [img]="
+                    imagenes['img0' + (i + 1)]
+                      ? imagenes['img0' + (i + 1)]
+                      : undefined
+                  "
                   (status)="loadedImage($event, i, 'img0')"
                 ></ac-upload>
                 <h5
                   class="col-form-label text-heading"
                   style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
                   for="nombre"
-                  [title]="images['img0' + (i + 1)] ? images['img0' + (i + 1)] : ''"
+                  [title]="
+                    images['img0' + (i + 1)] ? images['img0' + (i + 1)] : ''
+                  "
                 >
                   {{ images['img0' + (i + 1)] ? images['img0' + (i + 1)] : '' }}
                 </h5>
@@ -635,6 +641,93 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <h5>OAR</h5>
+      <div class="row">
+        <div class="form-group col-sm-12 ">
+          <div class="form-control select-box">
+            <input
+              type="text"
+              [(ngModel)]="filterDiags"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Buscar..."
+            />
+            <div
+              *ngFor="
+                let d of (partes
+                  | fusejs: filterDiags:{ keys: ['organo'], threshold: 0.3 });
+                let i = index
+              "
+              (click)="addParte(d, i)"
+            >
+              {{ d.nombre }}
+            </div>
+            <!--
+              <div *ngFor="let d of diagnosticos; let i = index;" (click)="addDiagnostico(d, i)">{{d.name}}</div>
+            -->
+          </div>
+        </div>
+      </div>
+      <h5>Partes Seleccionadas</h5>
+      <div
+        class="form-group row"
+        *ngFor="let p of partes_seleccionadas; let i = index"
+      >
+        <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
+          {{ p.nombre }}
+        </h5>
+        <div class="form-group col-sm-3 row">
+          <div class="dropdown ghost-dropdown col-sm-8" ngbDropdown>
+            <button
+              class="btn btn-primary"
+              type="button"
+              ngbDropdownToggle
+              style="text-align: right;"
+            >
+              {{ p.volumenLimite }}
+            </button>
+            <ul class="dropdown-menu" ngbDropdownMenu>
+              <li
+                style="text-align: right;"
+                class="dropdown-item"
+                (click)="p.volumenLimite = l; checkConstraint(p)"
+                *ngFor="let l of p.volumenes"
+              >
+                {{ l }}
+              </li>
+            </ul>
+          </div>
+          <span class="col-sm-2" style="margin-top:10px;">cc</span>
+        </div>
+        <!--
+          <h5 for="inputFirstName" class="col-sm-1 col-form-label text-heading">cc</h5>
+        -->
+        <div class="form-group row col-sm-2">
+          <input
+            class="form-control col-sm-8"
+            rows="1"
+            [(ngModel)]="p.constraint"
+            (change)="checkConstraint(p)"
+            type="number"
+            [ngModelOptions]="{ standalone: true }"
+            [ngClass]="{ 'form-control-danger': p.endpoint }"
+          />
+          <span class="col-sm-2" style="margin-top:10px;">GY</span>
+        </div>
+        <!--
+          <h5 for="inputFirstName" class="col-sm-1 col-form-label text-heading">GY</h5>
+        -->
+        <div class="col-sm-1">
+          <i class="fa nb-trash fa-3x" (click)="removeParte(p, i)"></i>
+        </div>
+        <span
+          *ngIf="p.endpoint"
+          for="inputFirstName"
+          class="col-sm-1"
+          style="color: red"
+          >{{ p.endpoint }}</span
+        >
       </div>
     </form>
   </nb-card-body>
