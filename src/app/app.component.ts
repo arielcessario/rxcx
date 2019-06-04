@@ -2,7 +2,7 @@ import { VolumenService } from './core/volumen.service';
 import { CoreService } from 'ac-core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { NbSidebarService, NbThemeService } from '@nebular/theme';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import {
@@ -21,7 +21,7 @@ interface Item {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterContentInit {
   // title = 'app';
   state: '';
 
@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
   isHideOnClick = true;
   isDuplicatesPrevented = false;
   isCloseButton = true;
+  spinner = true;
 
   config: ToasterConfig = new ToasterConfig({
     positionClass: this.position,
@@ -196,8 +197,16 @@ export class AppComponent implements OnInit {
       localStorage.setItem('THEME', 'corporate');
     }
     this.themeService.changeTheme(this.theme);
+    this.coreService.getLoadingStatus.subscribe(v => {
+      setTimeout(() => {
+        this.spinner = v.show;
+      }, 0);
+    });
   }
 
+  ngAfterContentInit() {
+    // this.spinner = false;
+  }
   makeToast(toast) {
     this.showToast(toast.type, toast.title, toast.body);
   }

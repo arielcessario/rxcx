@@ -117,11 +117,16 @@ agm-map {
         background-color: transparent;
         width: 100%;
         border: 0 solid transparent;
-        border-bottom: 1px solid rgba(52, 46, 115, 0.4);
-        color: #fff;
+        border-bottom: 1px solid rgba(52, 46, 115, 0.4); // color: #fff;
     }
     div {
         cursor: pointer;
+    }
+}
+
+.nb-theme-cosmic .select-box {
+    input {
+        color: white;
     }
 }
 
@@ -172,7 +177,7 @@ agm-map {
     -webkit-transition: .5s;
     transition: .5s;
     text-align: center;
-    i{
-      font-size: 20px;
+    i {
+        font-size: 20px;
     }
 }

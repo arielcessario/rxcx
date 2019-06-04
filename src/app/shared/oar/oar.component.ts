@@ -434,7 +434,7 @@ export class OarComponent implements OnInit, OnChanges {
       : '';
 
     // const partes: any = {};
-    paciente.organos = this.partes_seleccionadas;
+    // paciente.organos = this.partes_seleccionadas;
 
     // setTimeout(() => {
     //   this.oarService.onUpdatedOAR(this.paciente);
@@ -459,15 +459,15 @@ export class OarComponent implements OnInit, OnChanges {
 
     form.setValue({
       seguimientoImagenologico3M:
-        '' + this.seguimiento.seguimientoImagenologico3M || '1',
+      this.seguimiento.seguimientoImagenologico3M ? '' + this.seguimiento.seguimientoImagenologico3M : '1',
       seguimientoImagenologico3MDescr:
         this.seguimiento.seguimientoImagenologico3MDescr || '',
       seguimientoImagenologico6M:
-        '' + this.seguimiento.seguimientoImagenologico6M || '1',
+      this.seguimiento.seguimientoImagenologico6M ? '' + this.seguimiento.seguimientoImagenologico6M : '1',
       seguimientoImagenologico6MDescr:
         this.seguimiento.seguimientoImagenologico6MDescr || '',
       seguimientoImagenologico12M:
-        '' + this.seguimiento.seguimientoImagenologico12M || '1',
+      this.seguimiento.seguimientoImagenologico12M ? '' + this.seguimiento.seguimientoImagenologico12M : '1',
       seguimientoImagenologico12MDescr:
         this.seguimiento.seguimientoImagenologico12MDescr || ''
     });
@@ -523,7 +523,9 @@ export class OarComponent implements OnInit, OnChanges {
     const temp = this.imagenes;
     this.imagenes = [];
 
-    this.refreshPartes();
+    // this.refreshPartes();
+    // console.log(form);
+
 
     setTimeout(() => {
       this.openSeguimiento = false;
@@ -548,18 +550,18 @@ export class OarComponent implements OnInit, OnChanges {
 
     this.coreService.onValueChanged(); // (re)set validation messages now);
 
-    form.setValue({
-      oar_name: this.oar.oar || '',
-      toxicidadAguda: this.oar.toxicidadAguda || 0,
-      toxicidadAgudaDescr: this.oar.toxicidadAgudaDescr || '',
-      toxicidadCronica: this.oar.toxicidadCronica || 0,
-      toxicidadCronicaDescr: this.oar.toxicidadCronicaDescr || ''
-    });
+    // form.setValue({
+    //   oar_name: this.oar.oar || '',
+    //   toxicidadAguda: this.oar.toxicidadAguda || 0,
+    //   toxicidadAgudaDescr: this.oar.toxicidadAgudaDescr || '',
+    //   toxicidadCronica: this.oar.toxicidadCronica || 0,
+    //   toxicidadCronicaDescr: this.oar.toxicidadCronicaDescr || ''
+    // });
 
-    this.toxicidadAguda = this.oar.toxicidadAguda || 0;
-    this.toxicidadCronica = this.oar.toxicidadCronica || 0;
+    // this.toxicidadAguda = this.oar.toxicidadAguda || 0;
+    // this.toxicidadCronica = this.oar.toxicidadCronica || 0;
 
-    this.refreshPartes();
+    // this.refreshPartes();
 
     setTimeout(() => {
       this.open = false;

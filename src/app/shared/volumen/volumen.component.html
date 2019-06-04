@@ -1,7 +1,10 @@
 <nb-card>
-  <nb-card-header (click)="open = !open"
-    >Volúmen: {{ _volumen['nombre'] }}
-    <i
+  <nb-card-header (click)="open = !open" style="cursor: pointer;">
+    <i class="fa fa-plus-square-o" aria-hidden="true" *ngIf="!open" title="Mostrar detalle"></i>
+    <i class="fa fa-minus-square-o" aria-hidden="true" *ngIf="open" title="Oculatar detalle"></i>
+    Volúmen: {{ _volumen['nombre'] }}
+
+    <!-- <i
       class="fa fa-eye fa-3 pull-right"
       aria-hidden="true"
       *ngIf="!open"
@@ -12,37 +15,21 @@
       aria-hidden="true"
       *ngIf="open"
       title="Oculatar detalle"
-    ></i>
+    ></i> -->
     <!--
       <i class="fa fa-3 fa-minus pull-right" aria-hidden="true" (click)="eleminarVolumen()" title="Eliminar Volumen" *ngIf="volumen['new']"></i>
     -->
-    <i
-      class="fa fa-3 fa-trash pull-right"
-      aria-hidden="true"
-      (click)="eleminarVolumen()"
-      title="Eliminar Volumen"
-    ></i>
+    <i class="fa fa-3 fa-trash pull-right" aria-hidden="true" (click)="eleminarVolumen()" title="Eliminar Volumen"></i>
   </nb-card-header>
   <nb-card-body>
-    <form
-      [formGroup]="formVolumen"
-      *ngIf="formVolumen"
-      appCollapse
-      [isOpen]="open"
-    >
+    <form [formGroup]="formVolumen" *ngIf="formVolumen" appCollapse [isOpen]="open">
       <div class="row">
         <div class="col-sm-9">
           <div class="form-group">
             <h5 class="col-sm-3 col-form-label text-heading" for="nombre">
               Nombre
             </h5>
-            <input
-              type="text"
-              class="form-control"
-              id="nombre"
-              placeholder="Nombre"
-              formControlName="nombre"
-            />
+            <input type="text" class="form-control" id="nombre" placeholder="Nombre" formControlName="nombre" />
           </div>
         </div>
 
@@ -52,26 +39,16 @@
               Imagenes
             </h5>
             <div class="d-flex flex-row justify-content-around">
-              <div
-                class="form-group col-sm-1 col-xs-12"
-                *ngFor="let img of [0, 1, 2]; let i = index"
-              >
-                <ac-upload
-                  [img]="
+              <div class="form-group col-sm-1 col-xs-12" *ngFor="let img of [0, 1, 2]; let i = index">
+                <ac-upload [img]="
                     imagenes['img0' + (i + 1)]
                       ? imagenes['img0' + (i + 1)]
                       : undefined
-                  "
-                  (status)="loadedImage($event, i, 'img0')"
-                ></ac-upload>
-                <h5
-                  class="col-form-label text-heading"
-                  style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-                  for="nombre"
-                  [title]="
+                  " (status)="loadedImage($event, i, 'img0')"></ac-upload>
+                <h5 class="col-form-label text-heading"
+                  style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" for="nombre" [title]="
                     images['img0' + (i + 1)] ? images['img0' + (i + 1)] : ''
-                  "
-                >
+                  ">
                   {{ images['img0' + (i + 1)] ? images['img0' + (i + 1)] : '' }}
                 </h5>
               </div>
@@ -86,36 +63,17 @@
             <label class="col-sm-12 col-form-label text-heading">TPS</label>
             <div class="col-sm-12 d-flex flex-row">
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="tps"
-                  value="1"
-                  name="tps"
-                  checked
-                />
+                <input type="radio" class="custom-control-input" formControlName="tps" value="1" name="tps" checked />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">Brainlab</span>
               </label>
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="tps"
-                  value="0"
-                  name="tps"
-                />
+                <input type="radio" class="custom-control-input" formControlName="tps" value="0" name="tps" />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">Eclipse</span>
               </label>
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="tps"
-                  value="2"
-                  name="tps"
-                />
+                <input type="radio" class="custom-control-input" formControlName="tps" value="2" name="tps" />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">Elements</span>
               </label>
@@ -126,96 +84,53 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="form-group">
-            <label class="col-sm-12 col-form-label text-heading"
-              >Colimador</label
-            >
+            <label class="col-sm-12 col-form-label text-heading">Colimador</label>
             <div class="col-sm-12 d-flex flex-row">
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="colimador"
-                  value="0"
-                  name="colimador"
-                  checked
-                />
+                <input type="radio" class="custom-control-input" formControlName="colimador" value="0" name="colimador"
+                  checked />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">MLC</span>
               </label>
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="colimador"
-                  value="1"
-                  name="colimador"
-                />
+                <input type="radio" class="custom-control-input" formControlName="colimador" value="1"
+                  name="colimador" />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">7.5 mm</span>
               </label>
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="colimador"
-                  value="2"
-                  name="colimador"
-                />
+                <input type="radio" class="custom-control-input" formControlName="colimador" value="2"
+                  name="colimador" />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">12.5 mm</span>
               </label>
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="colimador"
-                  value="3"
-                  name="colimador"
-                />
+                <input type="radio" class="custom-control-input" formControlName="colimador" value="3"
+                  name="colimador" />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">15 mm</span>
               </label>
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="colimador"
-                  value="4"
-                  name="colimador"
-                />
+                <input type="radio" class="custom-control-input" formControlName="colimador" value="4"
+                  name="colimador" />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">17.5 mm</span>
               </label>
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="colimador"
-                  value="5"
-                  name="colimador"
-                />
+                <input type="radio" class="custom-control-input" formControlName="colimador" value="5"
+                  name="colimador" />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">20 mm</span>
               </label>
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="colimador"
-                  value="6"
-                  name="colimador"
-                />
+                <input type="radio" class="custom-control-input" formControlName="colimador" value="6"
+                  name="colimador" />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">25 mm</span>
               </label>
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="colimador"
-                  value="7"
-                  name="colimador"
-                />
+                <input type="radio" class="custom-control-input" formControlName="colimador" value="7"
+                  name="colimador" />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">30 mm</span>
               </label>
@@ -227,126 +142,68 @@
       <div class="row">
         <div class="col-sm-3">
           <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="volumenPTV"
-              >Volúmen PTV (cc)</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="volumenPTV"
-              placeholder="Volúmen PTV en cc"
-              formControlName="volumenPTV"
+            <label class="col-sm-12 col-form-label text-heading" for="gtv">GTV (cc)</label>
+            <input type="number" class="form-control input-number" id="gtv" placeholder="GTV (cc)" formControlName="gtv"
               [ngClass]="{
+                    'form-control-danger': formVolumen.controls['gtv'].invalid
+                  }" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="col-sm-12 col-form-label text-heading" for="margenCTVPTV">Margen CTV PTV (mm)</label>
+            <input type="number" class="form-control input-number" id="margenCTVPTV" placeholder="Margen CTV PTV (mm)"
+              formControlName="margenCTVPTV" [ngClass]="{
+                  'form-control-danger':
+                    formVolumen.controls['margenCTVPTV'].invalid
+                }" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="col-sm-12 col-form-label text-heading" for="volumenPTV">PTV (cc)</label>
+            <input type="number" class="form-control input-number" id="volumenPTV" placeholder="Volúmen PTV en cc"
+              formControlName="volumenPTV" [ngClass]="{
                 'form-control-danger':
                   formVolumen.controls['volumenPTV'].invalid
-              }"
-            />
+              }" />
           </div>
         </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="volumenIsodosisPrescripcion"
-              >V100</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="volumenIsodosisPrescripcion"
-              placeholder="Volumen de la isodosis de prescripcion en cc"
-              formControlName="volumenIsodosisPrescripcion"
-              [ngClass]="{
-                'form-control-danger':
-                  formVolumen.controls['volumenIsodosisPrescripcion'].invalid
-              }"
-            />
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="volumenIsodosisPrescripcionPorc"
-              >Prescripcion en %</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="volumenIsodosisPrescripcionPorc"
-              placeholder="Volumen de la isodosis de prescripcion en %"
-              formControlName="volumenIsodosisPrescripcionPorc"
-              [ngClass]="{
-                'form-control-danger':
-                  formVolumen.controls['volumenIsodosisPrescripcionPorc']
-                    .invalid
-              }"
-            />
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="volumenIsodosis50"
-              >V50</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="volumenIsodosis50"
-              placeholder="Volumen de la Isodosis del 50% en cc"
-              formControlName="volumenIsodosis50"
-              [ngClass]="{
-                'form-control-danger':
-                  formVolumen.controls['volumenIsodosis50'].invalid
-              }"
-            />
-          </div>
-        </div>
+
       </div>
 
       <div class="row">
         <div class="col-sm-3">
           <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="dosisTotalGy"
-              >Dosis Total Gy</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="dosisTotalGy"
-              placeholder="Dosis Total Gy"
-              formControlName="dosisTotalGy"
-              [ngClass]="{
+            <label class="col-sm-12 col-form-label text-heading" for="dosisTotalGy">Dosis Total Gy</label>
+            <input type="number" class="form-control input-number" id="dosisTotalGy" placeholder="Dosis Total Gy"
+              formControlName="dosisTotalGy" [ngClass]="{
                 'form-control-danger':
                   formVolumen.controls['dosisTotalGy'].invalid
-              }"
-            />
+              }" />
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="dosisFraccionGy"
-              >Dosis Fracción Gy</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="dosisFraccionGy"
-              placeholder="Dosis Fracción Gy"
-              formControlName="dosisFraccionGy"
-              [ngClass]="{
+            <label class="col-sm-12 col-form-label text-heading" for="dosisFraccionGy">Dosis Fracción Gy</label>
+            <input type="number" class="form-control input-number" id="dosisFraccionGy" placeholder="Dosis Fracción Gy"
+              formControlName="dosisFraccionGy" [ngClass]="{
                 'form-control-danger':
                   formVolumen.controls['dosisFraccionGy'].invalid
-              }"
-            />
+              }" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="col-sm-12 col-form-label text-heading" for="volumenIsodosisPrescripcionPorc">Prescripcion en
+              %</label>
+            <input type="number" class="form-control input-number" id="volumenIsodosisPrescripcionPorc"
+              placeholder="Volumen de la isodosis de prescripcion en %"
+              formControlName="volumenIsodosisPrescripcionPorc" [ngClass]="{
+                    'form-control-danger':
+                      formVolumen.controls['volumenIsodosisPrescripcionPorc']
+                        .invalid
+                  }" />
           </div>
         </div>
         <!--
@@ -360,39 +217,44 @@
         -->
         <div class="col-sm-3">
           <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="dosisMaximaGy"
-              >Dosis Máxima Gy</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="dosisMaximaGy"
-              placeholder="Dosis Máxima Gy"
-              formControlName="dosisMaximaGy"
-              [ngClass]="{
+            <label class="col-sm-12 col-form-label text-heading" for="dosisMaximaGy">Dosis Máxima Gy</label>
+            <input type="number" class="form-control input-number" id="dosisMaximaGy" placeholder="Dosis Máxima Gy"
+              formControlName="dosisMaximaGy" [ngClass]="{
                 'form-control-danger':
                   formVolumen.controls['dosisMaximaGy'].invalid
-              }"
-            />
+              }" />
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="col-sm-12 col-form-label text-heading" for="volumenIsodosisPrescripcion">V100</label>
+            <input type="number" class="form-control input-number" id="volumenIsodosisPrescripcion"
+              placeholder="Volumen de la isodosis de prescripcion en cc" formControlName="volumenIsodosisPrescripcion"
+              [ngClass]="{
+                      'form-control-danger':
+                        formVolumen.controls['volumenIsodosisPrescripcion'].invalid
+                    }" />
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
-            <label class="col-sm-12 col-form-label text-heading" for="v12"
-              >V12 Cerebro</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="v12"
-              placeholder="V12 Cerebro"
-              formControlName="v12"
-              [ngClass]="{
-                'form-control-danger': formVolumen.controls['v12'].invalid
-              }"
-            />
+            <label class="col-sm-12 col-form-label text-heading" for="volumenIsodosis50">V50</label>
+            <input type="number" class="form-control input-number" id="volumenIsodosis50"
+              placeholder="Volumen de la Isodosis del 50% en cc" formControlName="volumenIsodosis50" [ngClass]="{
+                    'form-control-danger':
+                      formVolumen.controls['volumenIsodosis50'].invalid
+                  }" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="col-sm-12 col-form-label text-heading" for="cantidadFracciones">Cantidad de Fracciones</label>
+            <input [attr.disabled]="true" type="number" class="form-control input-number" id="cantidadFracciones"
+              placeholder="Cantidad de Fracciones" formControlName="cantidadFracciones" />
           </div>
         </div>
       </div>
@@ -400,215 +262,86 @@
       <div class="row">
         <div class="col-sm-3">
           <div class="form-group">
-            <label class="col-sm-12 col-form-label text-heading" for="v20"
-              >V20 Cerebro</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="v20"
-              placeholder="V20 Cerebro"
-              formControlName="v20"
-              [ngClass]="{
-                'form-control-danger': formVolumen.controls['v20'].invalid
-              }"
-            />
+            <label class="col-sm-12 col-form-label text-heading" for="v20">V20 Cerebro</label>
+            <input type="number" class="form-control input-number" id="v20" placeholder="V20 Cerebro"
+              formControlName="v20" [ngClass]="{
+                        'form-control-danger': formVolumen.controls['v20'].invalid
+                      }" />
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
-            <label class="col-sm-12 col-form-label text-heading" for="GTV"
-              >GTV (cc)</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="GTV"
-              placeholder="GTV (cc)"
-              formControlName="GTV"
-              [ngClass]="{
-                'form-control-danger': formVolumen.controls['GTV'].invalid
-              }"
-            />
+            <label class="col-sm-12 col-form-label text-heading" for="v12">V12 Cerebro</label>
+            <input type="number" class="form-control input-number" id="v12" placeholder="V12 Cerebro"
+              formControlName="v12" [ngClass]="{
+                          'form-control-danger': formVolumen.controls['v12'].invalid
+                        }" />
           </div>
         </div>
       </div>
-
       <div class="row">
         <div class="col-sm-3">
           <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="cantidadFracciones"
-              >Cantidad de Fracciones</label
-            >
-            <input
-              [attr.disabled]="true"
-              type="number"
-              class="form-control input-number"
-              id="cantidadFracciones"
-              placeholder="Cantidad de Fracciones"
-              formControlName="cantidadFracciones"
-            />
-          </div>
-        </div>
-        <!--
-          <div class="col-sm-3">
-            <div class="form-group">
-              <label class="col-sm-12 col-form-label text-heading" for="v100">Volúmen 100%</label>
-              <input type="number" class="form-control input-number" id="v100" placeholder="Volúmen 100%" formControlName="v100"
-                [ngClass]="{'form-control-danger': formVolumen.controls['v100'].invalid}">
-            </div>
-          </div>
-        -->
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="margenCTVPTV"
-              >Margen CTV PTV (mm)</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="margenCTVPTV"
-              placeholder="Margen CTV PTV (mm)"
-              formControlName="margenCTVPTV"
-              [ngClass]="{
-                'form-control-danger':
-                  formVolumen.controls['margenCTVPTV'].invalid
-              }"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="indiceHomogeneidad"
-              >Indice de Homogeneidad</label
-            >
-            <input
-              [attr.disabled]="true"
-              type="number"
-              class="form-control input-number"
-              id="indiceHomogeneidad"
-              step="0.001"
-              placeholder="Indice de Homogeneidad"
-              formControlName="indiceHomogeneidad"
-              [ngClass]="{
+            <label class="col-sm-12 col-form-label text-heading" for="indiceHomogeneidad">Indice de Homogeneidad</label>
+            <input [attr.disabled]="true" type="number" class="form-control input-number" id="indiceHomogeneidad"
+              step="0.001" placeholder="Indice de Homogeneidad" formControlName="indiceHomogeneidad" [ngClass]="{
                 'form-control-danger':
                   formVolumen.controls['indiceHomogeneidad'].invalid
-              }"
-            />
+              }" />
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="indiceConformidad"
-              >Indice de Conformidad</label
-            >
-            <input
-              [attr.disabled]="true"
-              type="number"
-              class="form-control input-number"
-              id="indiceConformidad"
-              step="0.001"
-              placeholder="Indice de Conformidad"
-              formControlName="indiceConformidad"
-              [ngClass]="{
+            <label class="col-sm-12 col-form-label text-heading" for="indiceConformidad">Indice de Conformidad</label>
+            <input [attr.disabled]="true" type="number" class="form-control input-number" id="indiceConformidad"
+              step="0.001" placeholder="Indice de Conformidad" formControlName="indiceConformidad" [ngClass]="{
                 'form-control-danger':
                   formVolumen.controls['indiceConformidad'].invalid
-              }"
-            />
+              }" />
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="indiceGradiente"
-              >Indice de Gradiente</label
-            >
-            <input
-              [attr.disabled]="true"
-              type="number"
-              class="form-control input-number"
-              id="indiceGradiente"
-              step="0.001"
-              placeholder="Indice de Gradiente"
-              formControlName="indiceGradiente"
-              [ngClass]="{
+            <label class="col-sm-12 col-form-label text-heading" for="indiceGradiente">Indice de Gradiente</label>
+            <input [attr.disabled]="true" type="number" class="form-control input-number" id="indiceGradiente"
+              step="0.001" placeholder="Indice de Gradiente" formControlName="indiceGradiente" [ngClass]="{
                 'form-control-danger':
                   formVolumen.controls['indiceGradiente'].invalid
-              }"
-            />
+              }" />
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="indicePaddick"
-              >Indice de Conformidad Paddick</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="indicePaddick"
-              step="0.001"
-              placeholder="Indice de Conformidad Paddick"
-              formControlName="indicePaddick"
-              [ngClass]="{
+            <label class="col-sm-12 col-form-label text-heading" for="indicePaddick">Indice de Conformidad
+              Paddick</label>
+            <input type="number" class="form-control input-number" id="indicePaddick" step="0.001"
+              placeholder="Indice de Conformidad Paddick" formControlName="indicePaddick" [ngClass]="{
                 'form-control-danger':
                   formVolumen.controls['indicePaddick'].invalid
-              }"
-            />
+              }" />
           </div>
         </div>
       </div>
 
       <div class="row">
+
         <div class="col-sm-3">
           <div class="form-group">
-            <label
-              class="col-sm-12 col-form-label text-heading"
-              for="cantidadCampos"
-              >Cantidad de Campos</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="cantidadCampos"
-              placeholder="Cantidad de Campos"
-              formControlName="cantidadCampos"
-              [ngClass]="{
+            <label class="col-sm-12 col-form-label text-heading" for="cantidadCampos">Cantidad de Campos</label>
+            <input type="number" class="form-control input-number" id="cantidadCampos" placeholder="Cantidad de Campos"
+              formControlName="cantidadCampos" [ngClass]="{
                 'form-control-danger':
                   formVolumen.controls['cantidadCampos'].invalid
-              }"
-            />
+              }" />
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
-            <label class="col-sm-12 col-form-label text-heading" for="um"
-              >UM</label
-            >
-            <input
-              type="number"
-              class="form-control input-number"
-              id="um"
-              placeholder="UM"
-              formControlName="um"
+            <label class="col-sm-12 col-form-label text-heading" for="um">UM</label>
+            <input type="number" class="form-control input-number" id="um" placeholder="UM" formControlName="um"
               [ngClass]="{
                 'form-control-danger': formVolumen.controls['um'].invalid
-              }"
-            />
+              }" />
           </div>
         </div>
         <div class="col-sm-3">
@@ -616,25 +349,13 @@
             <label class="col-sm-12 col-form-label text-heading">Técnica</label>
             <div class="col-sm-9 d-flex flex-row">
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="tecnica"
-                  value="0"
-                  name="tecnica"
-                  checked
-                />
+                <input type="radio" class="custom-control-input" formControlName="tecnica" value="0" name="tecnica"
+                  checked />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">3D</span>
               </label>
               <label class="custom-control custom-radio">
-                <input
-                  type="radio"
-                  class="custom-control-input"
-                  formControlName="tecnica"
-                  value="1"
-                  name="tecnica"
-                />
+                <input type="radio" class="custom-control-input" formControlName="tecnica" value="1" name="tecnica" />
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">VMAT</span>
               </label>
@@ -647,20 +368,13 @@
       <div class="row">
         <div class="form-group col-sm-12 ">
           <div class="form-control select-box">
-            <input
-              type="text"
-              [(ngModel)]="filterDiags"
-              [ngModelOptions]="{ standalone: true }"
-              placeholder="Buscar..."
-            />
-            <div
-              *ngFor="
+            <input type="text" [(ngModel)]="filterDiags" [ngModelOptions]="{ standalone: true }"
+              placeholder="Buscar..." />
+            <div *ngFor="
                 let d of (partes
-                  | fusejs: filterDiags:{ keys: ['organo'], threshold: 0.3 });
+                  | fusejs: filterDiags:{ keys: ['nombre'], threshold: 0.3 });
                 let i = index
-              "
-              (click)="addParte(d, i)"
-            >
+              " (click)="addParte(d, i)">
               {{ d.nombre }}
             </div>
             <!--
@@ -670,30 +384,18 @@
         </div>
       </div>
       <h5>Partes Seleccionadas</h5>
-      <div
-        class="form-group row"
-        *ngFor="let p of partes_seleccionadas; let i = index"
-      >
-        <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
-          {{ p.nombre }}
-        </h5>
+      <div class="form-group row" *ngFor="let p of volumen.organos; let i = index">
+        <h1 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
+          <b>{{ p.nombre }}</b>
+        </h1>
         <div class="form-group col-sm-3 row">
           <div class="dropdown ghost-dropdown col-sm-8" ngbDropdown>
-            <button
-              class="btn btn-primary"
-              type="button"
-              ngbDropdownToggle
-              style="text-align: right;"
-            >
+            <button class="btn btn-primary" type="button" ngbDropdownToggle style="text-align: right;">
               {{ p.volumenLimite }}
             </button>
             <ul class="dropdown-menu" ngbDropdownMenu>
-              <li
-                style="text-align: right;"
-                class="dropdown-item"
-                (click)="p.volumenLimite = l; checkConstraint(p)"
-                *ngFor="let l of p.volumenes"
-              >
+              <li style="text-align: right;" class="dropdown-item" (click)="p.volumenLimite = l; checkConstraint(p)"
+                *ngFor="let l of p.volumenes">
                 {{ l }}
               </li>
             </ul>
@@ -704,15 +406,9 @@
           <h5 for="inputFirstName" class="col-sm-1 col-form-label text-heading">cc</h5>
         -->
         <div class="form-group row col-sm-2">
-          <input
-            class="form-control col-sm-8"
-            rows="1"
-            [(ngModel)]="p.constraint"
-            (change)="checkConstraint(p)"
-            type="number"
-            [ngModelOptions]="{ standalone: true }"
-            [ngClass]="{ 'form-control-danger': p.endpoint }"
-          />
+          <input class="form-control col-sm-8" style=" height: 40px;" rows="1" [(ngModel)]="p.constraint"
+            (change)="checkConstraint(p)" type="number" [ngModelOptions]="{ standalone: true }"
+            [ngClass]="{ 'form-control-danger': p.endpoint }" />
           <span class="col-sm-2" style="margin-top:10px;">GY</span>
         </div>
         <!--
@@ -721,13 +417,16 @@
         <div class="col-sm-1">
           <i class="fa nb-trash fa-3x" (click)="removeParte(p, i)"></i>
         </div>
-        <span
-          *ngIf="p.endpoint"
-          for="inputFirstName"
-          class="col-sm-1"
-          style="color: red"
-          >{{ p.endpoint }}</span
-        >
+        <h5 *ngIf="p.endpoint" for="inputFirstName" class="col-sm-3" style="color: red;
+          line-height: 40px;">
+          {{ p.endpoint }}
+        </h5>
+      </div>
+      <h5>Comentarios</h5>
+      <div class="row">
+        <div class="form-group col-sm-12 col-xs-12 ">
+          <textarea class="form-control" rows="4" formControlName="comentarios"></textarea>
+        </div>
       </div>
     </form>
   </nb-card-body>

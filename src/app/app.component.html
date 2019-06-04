@@ -8,7 +8,7 @@
     <nb-menu [items]="menu" (click)="toggleSidebar()"></nb-menu>
   </nb-sidebar>
 
-  <nb-layout-column>
+  <nb-layout-column  [nbSpinner]="spinner">
     <router-outlet></router-outlet>
   </nb-layout-column>
 </nb-layout>

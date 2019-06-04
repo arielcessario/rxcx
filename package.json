@@ -32,7 +32,7 @@
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "fontawesome": "^4.7.2",
-    "fuse.js": "^3.3.0",
+    "fuse.js": "^3.4.4",
     "lodash": "^4.17.11",
     "nebular-icons": "^1.1.0",
     "ng2-completer": "^2.0.8",

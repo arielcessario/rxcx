@@ -1,204 +1,22 @@
-<nb-card *ngIf="false">
-  <nb-card-header (click)="open = !open"
-    >OAR
+<nb-card>
+  <nb-card-header
+    (click)="openSeguimiento = !openSeguimiento"
+    style="cursor: pointer;"
+  >
     <i
-      class="fa fa-eye fa-3 pull-right"
+      class="fa fa-plus-square-o"
       aria-hidden="true"
-      *ngIf="!open"
+      *ngIf="!openSeguimiento"
       title="Mostrar detalle"
     ></i>
     <i
-      class="fa fa-eye-slash fa-3 pull-right"
+      class="fa fa-minus-square-o"
       aria-hidden="true"
-      *ngIf="open"
+      *ngIf="openSeguimiento"
       title="Oculatar detalle"
     ></i>
-  </nb-card-header>
-
-  <nb-card-body>
-    <form
-      [formGroup]="formOAR"
-      style="max-width:98%;"
-      *ngIf="formOAR"
-      appCollapse
-      [isOpen]="open"
-    >
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="form-group">
-            <h5 class="col-sm-12 col-form-label text-heading" for="oar">
-              Descripción
-            </h5>
-            <!--
-              <input type="text" class="form-control" id="oar" placeholder="Descripción" formControlName="oar" [ngClass]="{'form-control-danger': formOAR.controls['oar'].invalid}">
-            -->
-            <input
-              type="text"
-              class="form-control"
-              id="oar"
-              placeholder="Descripción"
-              formControlName="oar_name"
-            />
-          </div>
-        </div>
-      </div>
-      <!-- Toxicidad -->
-
-      <div class="form-group row">
-        <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
-          Toxicidad Aguda
-        </h5>
-        <div class="form-group col-sm-2">
-          <rxc-switcher
-            [value]="toxicidadAguda || 0"
-            [firstValue]="1"
-            [secondValue]="0"
-            [firstValueLabel]="'Si'"
-            [secondValueLabel]="'No'"
-            (valueChange)="toxicidadAguda = $event"
-          ></rxc-switcher>
-        </div>
-        <div class="form-group col-sm-7 ">
-          <textarea
-            class="form-control"
-            rows="1"
-            formControlName="toxicidadAgudaDescr"
-          ></textarea>
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
-          Toxicidad Crónica
-        </h5>
-        <div class="form-group col-sm-2">
-          <rxc-switcher
-            [value]="toxicidadCronica || 0"
-            [firstValue]="1"
-            [secondValue]="0"
-            [firstValueLabel]="'Si'"
-            [secondValueLabel]="'No'"
-            (valueChange)="toxicidadCronica = $event"
-          ></rxc-switcher>
-        </div>
-        <div class="form-group col-sm-7 ">
-          <textarea
-            class="form-control"
-            rows="1"
-            formControlName="toxicidadCronicaDescr"
-          ></textarea>
-        </div>
-      </div>
-
-      <!-- PARTES -->
-
-      <div class="row">
-        <div class="form-group col-sm-12 ">
-          <div class="form-control select-box">
-            <input
-              type="text"
-              [(ngModel)]="filterDiags"
-              [ngModelOptions]="{ standalone: true }"
-              placeholder="Buscar..."
-            />
-            <div
-              *ngFor="
-                let d of (partes
-                  | fusejs: filterDiags:{ keys: ['organo'], threshold: 0.3 });
-                let i = index
-              "
-              (click)="addParte(d, i)"
-            >
-              {{ d.nombre }}
-            </div>
-            <!--
-              <div *ngFor="let d of diagnosticos; let i = index;" (click)="addDiagnostico(d, i)">{{d.name}}</div>
-            -->
-          </div>
-        </div>
-      </div>
-      <h5>Partes Seleccionadas</h5>
-      <div
-        class="form-group row"
-        *ngFor="let p of partes_seleccionadas; let i = index"
-      >
-        <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
-          {{ p.nombre }}
-        </h5>
-        <div class="form-group col-sm-2 row">
-          <div class="dropdown ghost-dropdown col-sm-8" ngbDropdown>
-            <button class="btn btn-primary" type="button" ngbDropdownToggle>
-              {{ p.volumenLimite }}
-            </button>
-            <ul class="dropdown-menu" ngbDropdownMenu>
-              <li
-                class="dropdown-item"
-                (click)="p.volumenLimite = l; checkConstraint(p)"
-                *ngFor="let l of p.volumenes"
-              >
-                {{ l }}
-              </li>
-            </ul>
-          </div>
-          <span class="col-sm-2" style="margin-top:10px;">cc</span>
-        </div>
-        <!--
-          <h5 for="inputFirstName" class="col-sm-1 col-form-label text-heading">cc</h5>
-        -->
-        <div class="form-group row col-sm-2">
-          <input
-            class="form-control col-sm-8"
-            rows="1"
-            [(ngModel)]="p.constraint"
-            (change)="checkConstraint(p)"
-            (keyup)="db()"
-            type="number"
-            [ngModelOptions]="{ standalone: true }"
-            [ngClass]="{ 'form-control-danger': p.endpoint }"
-          />
-          <span class="col-sm-2" style="margin-top:10px;">GY</span>
-        </div>
-        <!--
-          <h5 for="inputFirstName" class="col-sm-1 col-form-label text-heading">GY</h5>
-        -->
-        <h5 for="inputFirstName" class="col-sm-1 col-form-label text-heading">
-          Fracciones
-        </h5>
-        <div class="form-group col-sm-2">
-          <div class="dropdown ghost-dropdown" ngbDropdown>
-            <button class="btn btn-primary" type="button" ngbDropdownToggle>
-              {{ p.cantidad }}
-            </button>
-            <ul class="dropdown-menu" ngbDropdownMenu>
-              <li
-                class="dropdown-item"
-                (click)="p.cantidad = v.cantidad; checkConstraint(p)"
-                *ngFor="let v of volFracciones"
-              >
-                {{ v.cantidad }}
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-sm-1">
-          <i class="fa nb-trash fa-3x" (click)="removeParte(p, i)"></i>
-        </div>
-        <span
-          *ngIf="p.endpoint"
-          for="inputFirstName"
-          class="col-sm-1"
-          style="color: red"
-          >{{ p.endpoint }}</span
-        >
-      </div>
-    </form>
-  </nb-card-body>
-</nb-card>
-
-<nb-card>
-  <nb-card-header (click)="openSeguimiento = !openSeguimiento"
-    >Seguimiento
-    <i
+    Seguimiento
+    <!-- <i
       class="fa fa-eye fa-3 pull-right"
       aria-hidden="true"
       *ngIf="!openSeguimiento"
@@ -209,7 +27,7 @@
       aria-hidden="true"
       *ngIf="openSeguimiento"
       title="Oculatar detalle"
-    ></i>
+    ></i> -->
   </nb-card-header>
   <nb-card-body>
     <form
@@ -276,7 +94,7 @@
         <div class="form-group col-sm-6 col-xs-5 ">
           <textarea
             class="form-control"
-            rows="1"
+            rows="3"
             formControlName="seguimientoImagenologico3MDescr"
           ></textarea>
         </div>
@@ -369,7 +187,7 @@
         <div class="form-group col-sm-6 ">
           <textarea
             class="form-control"
-            rows="1"
+            rows="3"
             formControlName="seguimientoImagenologico6MDescr"
           ></textarea>
         </div>
@@ -462,7 +280,7 @@
         <div class="form-group col-sm-6 ">
           <textarea
             class="form-control"
-            rows="1"
+            rows="3"
             formControlName="seguimientoImagenologico12MDescr"
           ></textarea>
         </div>

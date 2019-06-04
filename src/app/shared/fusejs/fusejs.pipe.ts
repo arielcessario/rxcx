@@ -11,6 +11,7 @@ export class FusejsPipe implements PipeTransform {
   transform(elements: Array<Object>,
             searchTerms: string,
             options: AngularFusejsOptions = {}) {
+
     return this.FusejsService.searchList(elements, searchTerms, options);
   }
 }

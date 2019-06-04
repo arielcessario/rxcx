@@ -20,7 +20,8 @@ import {
   NbCardModule,
   NbMenuModule,
   NbTabsetModule,
-  NbUserModule
+  NbUserModule,
+  NbSpinnerModule
 } from '@nebular/theme';
 import {
   NbSidebarModule,
@@ -112,6 +113,7 @@ const projectConfig = {
     NbTabsetModule,
     NbMenuModule,
     NbUserModule,
+    NbSpinnerModule,
     CoreModule,
     SharedModule,
     Routing,

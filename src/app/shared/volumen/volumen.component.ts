@@ -20,7 +20,7 @@ import { RxCxProxy } from 'rxcx-core';
 })
 export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
-  volumen = '';
+  volumen: any = {};
 
   @Output()
   eliminarVolumen = new EventEmitter<string>();
@@ -72,7 +72,8 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
   public margenCTVPTV: number;
   public v12: number;
   public v20: number;
-  public GTV: number;
+  public gtv: number;
+  public comentarios: string;
 
   // Imagenes
   imagenes: Array<any> = [];
@@ -99,7 +100,8 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
     margenCTVPTV: [this.margenCTVPTV],
     v12: [this.v12],
     v20: [this.v20],
-    GTV: [this.GTV]
+    gtv: [this.gtv],
+    comentarios: [this.comentarios]
   };
 
   // volumen: any = { nombre: '' };
@@ -146,15 +148,20 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
 
     this.rxcxProxy.getOrganos().subscribe(organos => {
       this.partes = organos;
-      console.log(organos);
-
-      // if (this.oar) {
-      //   this.refreshPartes();
-      // }
     });
 
     this.rxcxProxy.getReglasOrganos().subscribe(reglas => {
       this.reglasOrganos = reglas;
+
+      if (this.volumen.organos) {
+        this.partes_seleccionadas = this.volumen.organos;
+        for (let i = 0; i < this.volumen.organos.length; i++) {
+          this.checkConstraint(this.volumen.organos[i]);
+          this.volumen.organos[i].volumenes = this.addVolumenesPartes(
+            this.volumen.organos[i]
+          );
+        }
+      }
     });
 
     this.saveSubs = this.volumenService.saveVolumen.subscribe(() => {
@@ -175,9 +182,7 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnChanges(e) {
-    // console.log(e);
-  }
+  ngOnChanges(e) {}
 
   ngOnDestroy() {
     this.saveSubs.unsubscribe();
@@ -192,7 +197,7 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   eleminarVolumen() {
-    this.eliminarVolumen.emit(this.volumen['uid']);
+    this.eliminarVolumen.emit(this.volumen['volumen_id']);
   }
 
   getVolumen(): any {
@@ -224,24 +229,20 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
       tecnica: this.formVolumen.get('tecnica').value,
       v12: this.formVolumen.get('v12').value,
       v20: this.formVolumen.get('v20').value,
-      GTV: this.formVolumen.get('GTV').value,
+      gtv: this.formVolumen.get('gtv').value,
       paciente: this.paciente,
       img02: this.imagenes['img02'] ? this.imagenes['img02'] : '',
       img03: this.imagenes['img03'] ? this.imagenes['img03'] : '',
-      img01: this.imagenes['img01'] ? this.imagenes['img01'] : ''
+      img01: this.imagenes['img01'] ? this.imagenes['img01'] : '',
+      comentarios: this.formVolumen.get('comentarios').value,
+      organos: this.volumen.organos
     };
 
     return volumen;
   }
 
   addParte(d, i) {
-    const limitesVolumenes = [];
-
-    for (let z = 0; z < this.reglasOrganos.length; z++) {
-      if (d.organo_id === this.reglasOrganos[z].organo_id) {
-        limitesVolumenes.push(this.reglasOrganos[z].volumen);
-      }
-    }
+    const limitesVolumenes = this.addVolumenesPartes(d);
 
     setTimeout(() => {
       const t = {
@@ -251,31 +252,59 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
         nombre: d.nombre,
         volumenes: limitesVolumenes
       };
-      this.partes_seleccionadas.push(t);
+      if (!this.volumen.organos) {
+        this.volumen.organos = [];
+      }
+      this.volumen.organos.push(t);
     }, 0);
+  }
+
+  addVolumenesPartes(d) {
+    // console.log(d);
+    // console.log(this.reglasOrganos);
+
+    const limitesVolumenes = [];
+    const fr = this.formVolumen.get('cantidadFracciones').value;
+
+    for (let z = 0; z < this.reglasOrganos.length; z++) {
+      if (
+        d.organo_id === this.reglasOrganos[z].organo_id &&
+        parseInt(fr) === parseInt(this.reglasOrganos[z].fraccion)
+      ) {
+        limitesVolumenes.push(this.reglasOrganos[z].volumen);
+      }
+    }
+
+    return limitesVolumenes;
   }
 
   checkConstraint(p) {
     const limitesVolumenes = [];
+    console.log(this.reglasOrganos);
+
+    const cantFracciones = this.formVolumen.get('cantidadFracciones').value;
     for (let i = 0; i < this.reglasOrganos.length; i++) {
       if (
         p.organo_id === this.reglasOrganos[i].organo_id &&
-        this.formVolumen.get('cantidadFracciones').value ===
-          this.reglasOrganos[i].fraccion
+        parseFloat(cantFracciones) ===
+          parseFloat(this.reglasOrganos[i].fraccion)
       ) {
         limitesVolumenes.push(this.reglasOrganos[i].constraint);
       }
     }
 
-    setTimeout(() => {
-      p.volumenes = limitesVolumenes;
-    }, 0);
+    // console.log(limitesVolumenes);
+
+    // setTimeout(() => {
+    //   p.volumenes = limitesVolumenes;
+    // }, 0);
 
     p.endpoint = '';
     for (let i = 0; i < this.reglasOrganos.length; i++) {
       if (
         this.reglasOrganos[i].organo_id === p.organo_id &&
-        this.reglasOrganos[i].fraccion === p.cantidad &&
+        parseFloat(cantFracciones) ===
+          parseFloat(this.reglasOrganos[i].fraccion) &&
         this.reglasOrganos[i].constraint < p.constraint
       ) {
         p.endpoint = this.reglasOrganos[i].endpoint;
@@ -324,8 +353,9 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
         um: 0,
         v12: 0,
         v20: 0,
-        GTV: 0,
-        tecnica: '0'
+        gtv: 0,
+        tecnica: '0',
+        comentarios: ''
       });
     } else {
       form.setValue({
@@ -356,24 +386,35 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
         um: this._volumen['um'] || 0,
         v12: this._volumen['v12'] || 0,
         v20: this._volumen['v20'] || 0,
-        GTV: this._volumen['GTV'] || 0,
-        tecnica: '' + this._volumen['tecnica'] || '0'
+        gtv: this._volumen['gtv'] || 0,
+        tecnica: '' + this._volumen['tecnica'] || '0',
+        comentarios: '' + this._volumen['comentarios'] || ''
       });
       this.volumen['new'] = false;
     }
 
-    if (this._volumen['cantidadFracciones'] && this.volumen['volumen_id']) {
-      this.volumenService.onCalcFracciones({
-        volumen_id: this.volumen['volumen_id'],
-        cantidad: this._volumen['cantidadFracciones']
-      });
-    }
+    // if (this._volumen['cantidadFracciones'] && this.volumen['volumen_id']) {
+    //   this.volumenService.onCalcFracciones({
+    //     volumen_id: this.volumen['volumen_id'],
+    //     cantidad: this._volumen['cantidadFracciones']
+    //   });
+    // }
 
     setTimeout(() => {
       if (this.volumen['new']) {
         this.open = true;
       } else {
         this.open = false;
+      }
+
+      if (this.volumen.organos) {
+        for (let i = 0; i < this.volumen.organos.length; i++) {
+          this.checkConstraint(this.volumen.organos[i]);
+
+          this.volumen.organos[i].volumenes = this.addVolumenesPartes(
+            this.volumen.organos[i]
+          );
+        }
       }
     }, 100);
 
@@ -415,7 +456,7 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
       this.calcCantidadFracciones();
     });
 
-    form.get('GTV').valueChanges.subscribe(val => {
+    form.get('gtv').valueChanges.subscribe(val => {
       this.updateCITV.emit({ uid: this.volumen['uid'], val: val });
     });
 

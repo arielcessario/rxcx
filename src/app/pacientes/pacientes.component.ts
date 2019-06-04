@@ -121,6 +121,18 @@ export class PacientesComponent implements OnInit {
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
+
+      console.log(event);
+
+      this.rxcxProxy.deletePaciente(event.data.paciente_id).subscribe((r) => {
+        console.log(r);
+        this.rxcxProxy.getPacientes().subscribe(data => {
+          this.source.load(data);
+        });
+      }, (e) => {
+        console.log(e);
+
+      })
       // event.confirm.resolve();
       // console.log(event.data.uid);
       // this.afs
@@ -157,7 +169,7 @@ export class PacientesComponent implements OnInit {
     // console.log('hola');
   }
 
-  getDiagnosticos() {}
+  getDiagnosticos() { }
 
   export(): void {
     /* generate worksheet */
@@ -198,10 +210,10 @@ export class PacientesComponent implements OnInit {
         this.allPatients[i].diags,
         this.allPatients[i].edad,
         this.allPatients[i].fechaaplicacion.day +
-          '-' +
-          this.allPatients[i].fechaaplicacion.month +
-          '-' +
-          this.allPatients[i].fechaaplicacion.year,
+        '-' +
+        this.allPatients[i].fechaaplicacion.month +
+        '-' +
+        this.allPatients[i].fechaaplicacion.year,
         this.allPatients[i].oar,
         this.allPatients[i].radioterapiaprevia,
         this.allPatients[i].radioterapiapreviadescr,

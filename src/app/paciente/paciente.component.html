@@ -1,8 +1,20 @@
 <nb-card *ngIf="(exists && paciente) || isNew">
-  <nb-card-header (click)="open = !open"
-    >Datos: {{ paciente.nombre }} {{ paciente.apellido }} {{ paciente.hc }}
-    {{ getDiagnosticosTitulo() }} {{ oar_name }}
+  <nb-card-header (click)="open = !open" style="cursor: pointer;">
     <i
+      class="fa fa-plus-square-o"
+      aria-hidden="true"
+      *ngIf="!open"
+      title="Mostrar detalle"
+    ></i>
+    <i
+      class="fa fa-minus-square-o"
+      aria-hidden="true"
+      *ngIf="open"
+      title="Oculatar detalle"
+    ></i>
+    Datos: {{ paciente.nombre }} {{ paciente.apellido }} {{ paciente.hc }}
+    {{ getDiagnosticosTitulo() }} {{ oar_name }}
+    <!-- <i
       class="fa fa-eye fa-3 pull-right"
       aria-hidden="true"
       *ngIf="!open"
@@ -13,7 +25,7 @@
       aria-hidden="true"
       *ngIf="open"
       title="Ocultar detalle"
-    ></i>
+    ></i> -->
   </nb-card-header>
   <nb-card-body>
     <!-- <div > -->
@@ -375,7 +387,11 @@
   ></rxc-volumen>
 </ng-container>
 
-<rxc-oar *ngIf="paciente.oar && paciente.seguimiento" [oar]="paciente.oar[0]" [seguimiento]="paciente.seguimiento[0]"></rxc-oar>
+<rxc-oar
+  *ngIf="paciente.oar && paciente.seguimiento"
+  [oar]="paciente.oar[0]"
+  [seguimiento]="paciente.seguimiento[0]"
+></rxc-oar>
 
 <div class="pull-right floating-menu">
   <div id="open-actions-menus">

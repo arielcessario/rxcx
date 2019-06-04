@@ -125,42 +125,21 @@ export class PacienteComponent implements OnInit, OnDestroy {
     private volumenService: VolumenService,
     private oarService: OarService,
     private rxcxProxy: RxCxProxy
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.rxcxProxy.getDiagnosticos().subscribe(data => {
       this.diagnosticos = data;
     });
 
-    // Si tengo un id lo uso para buscar, en caso contrario, es un paciente vacío.
     this.route.params.subscribe(params => {
+
       this.id = params['id'];
 
       if (this.id !== '0') {
         this._id = this.id;
 
-        this.rxcxProxy.getPaciente(this._id).subscribe(data => {
-          const tmp = data[0];
-
-          tmp.fecha_aplicacion = {
-            day: new Date(tmp.fecha_aplicacion).getDate(),
-            month: new Date(tmp.fecha_aplicacion).getMonth() + 1,
-            year: new Date(tmp.fecha_aplicacion).getFullYear()
-          };
-
-          this.paciente = tmp;
-          console.log(this.paciente);
-
-          setTimeout(() => {
-            this.volumenes = this.paciente.volumenes || [];
-          }, 0);
-
-          this.formPaciente = this.buildForm(
-            this.formPaciente,
-            this._pacienteGroup
-          );
-          this.isNew = false;
-        });
+        this.getData();
       } else {
         this.formPaciente = this.buildForm(
           this.formPaciente,
@@ -177,6 +156,41 @@ export class PacienteComponent implements OnInit, OnDestroy {
     // })
   }
 
+  getData(id?: number) {
+    this.volumenes = [];
+    // console.log('id: ', this._id);
+
+
+    if (!id) {
+      id = parseInt(this._id);
+    } else {
+      this._id = id.toString();
+    }
+    // this.coreService.setLoadingStatus(true);
+    this.rxcxProxy.getPaciente(id).subscribe(data => {
+      const tmp = data[0];
+
+      tmp.fecha_aplicacion = {
+        day: new Date(tmp.fecha_aplicacion).getDate(),
+        month: new Date(tmp.fecha_aplicacion).getMonth() + 1,
+        year: new Date(tmp.fecha_aplicacion).getFullYear()
+      };
+
+      this.paciente = tmp;
+      // console.log(this.paciente);
+
+      setTimeout(() => {
+        this.volumenes = this.paciente.volumenes || [];
+      }, 0);
+
+      this.formPaciente = this.buildForm(
+        this.formPaciente,
+        this._pacienteGroup
+      );
+      this.isNew = false;
+    });
+  }
+
   updateCITV(e) {
     this.gtvs[e.uid] = e.val;
     this.citv = 0;
@@ -186,7 +200,6 @@ export class PacienteComponent implements OnInit, OnDestroy {
       this.citv = this.citv + this.gtvs[keys[i]];
     }
 
-    console.log(this.citv);
 
     setTimeout(() => {
       this.formPaciente.get('citv').setValue(this.citv);
@@ -251,7 +264,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
         nombre: '',
         apellido: '',
         hc: '',
-        edad: '',
+        edad: 0,
         sexo: '1',
         rpa: '1',
         citv: '0',
@@ -270,7 +283,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
         nombre: this.paciente.nombre || '',
         apellido: this.paciente.apellido || '',
         hc: this.paciente.hc || '',
-        edad: this.paciente.edad || '',
+        edad: this.paciente.edad || 0,
         sexo: '' + this.paciente.sexo || '1',
         rpa: '' + this.paciente.rpa || '1',
         citv: this.paciente.citv || '0',
@@ -311,6 +324,8 @@ export class PacienteComponent implements OnInit, OnDestroy {
         if (!this._keepOpen) {
           this.open = false;
         }
+
+        // this.coreService.setLoadingStatus(false);
       }, 0);
     }
 
@@ -338,11 +353,13 @@ export class PacienteComponent implements OnInit, OnDestroy {
   }
 
   eliminarVolumen(e) {
+    // console.log(e);
+
     if (this.volumenes.length > 0) {
       this.volumesToRemove.push(e);
       let toRemove = -1;
       for (let i = 0; i < this.volumenes.length; i++) {
-        if (this.volumenes[i].uid === e) {
+        if (this.volumenes[i].volumen_id === e) {
           toRemove = +i;
         }
       }
@@ -355,7 +372,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
 
   switchValue(e, obj) {
     this.paciente[obj] = e;
-    console.log(this.paciente);
+    // console.log(this.paciente);
   }
 
   save() {
@@ -414,7 +431,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
     }
 
     const sub = this.volumenService.saveConfirmVolumen.subscribe(v => {
-      // console.log(v);
+      // console.log('volumen', v);
 
       let volumenesSalvados = true;
 
@@ -423,9 +440,20 @@ export class PacienteComponent implements OnInit, OnDestroy {
           this.volumenes[i]['salvado'] = true;
           if (!this._paciente.volumenes) {
             this._paciente.volumenes = [];
+            this._paciente.volumenes.push(v);
+          } else {
+            let encontrado = false;
+            for (let x = 0; x < this._paciente.volumenes.length; x++) {
+              if (this._paciente.volumenes[x].volumen_id === v.volumen_id) {
+                encontrado = true;
+              }
+            }
+
+            if (!encontrado) {
+              this._paciente.volumenes.push(v);
+            }
           }
 
-          this._paciente.volumenes.push(v);
         }
       }
 
@@ -451,7 +479,6 @@ export class PacienteComponent implements OnInit, OnDestroy {
 
     // OAR
     const oarSubs = this.oarService.updatedOAR.subscribe(data => {
-      console.log('respuesta final', data);
       this._paciente = data;
       oarSubs.unsubscribe();
       if (this.id === '0') {
@@ -463,7 +490,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
   }
 
   create(paciente) {
-    console.log(paciente);
+    //console.log(paciente);
     this.rxcxProxy.createPaciente(paciente).subscribe(r => {
       this.coreService.setToast({
         type: 'success',
@@ -471,7 +498,13 @@ export class PacienteComponent implements OnInit, OnDestroy {
         body: 'Paciente creado con éxito'
       });
       this.location.go('/paciente/' + r);
-      this.id = r;
+      this.id = undefined;
+      console.log(r);
+
+      setTimeout(() => {
+        this.id = r;
+        this.getData(r);
+      }, 1000);
     });
 
     // this.afs
@@ -493,7 +526,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
   }
 
   update(paciente) {
-    console.log('update');
+    // console.log('update');
     paciente.paciente_id = this.id;
 
     console.log(paciente);
@@ -504,6 +537,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
         title: 'Update',
         body: 'Paciente modificado con éxito'
       });
+      this.getData();
     });
   }
 

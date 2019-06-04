@@ -61,7 +61,7 @@ export class OrganoComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private coreService: CoreService,
     private rxcxProxy: RxCxProxy
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.rxcxProxy.getEndpoints().subscribe(data => {
@@ -126,7 +126,7 @@ export class OrganoComponent implements OnInit, OnDestroy {
                 constraints: constraints
               });
               constraints = [];
-              organo_fraccion_id = data[i].organo_fraccion_id;
+              organo_fraccion_id = (data[i + 1]) ? data[i + 1].organo_fraccion_id : -1;
             }
           }
 
@@ -241,7 +241,7 @@ export class OrganoComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 
   volver() {
     this.router.navigate(['/organos']);
