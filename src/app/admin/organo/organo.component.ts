@@ -107,7 +107,7 @@ export class OrganoComponent implements OnInit, OnDestroy {
           let constraints = [];
           for (let i = 0; i < data.length; i++) {
             const organo = data[i];
-            // Tocar esta parte para que muestre 3 decimales.
+            // Tocar esta parte para que muestre 3 decimales..
             constraints.push({
               volumen: Math.round(organo.volumen * 100) / 100,
               constraint: Math.round(organo.constraint * 100) / 100,
