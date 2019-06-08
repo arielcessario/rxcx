@@ -49,6 +49,9 @@ export class PacienteComponent implements OnInit, OnDestroy {
   public cirugia_previa: string;
   public fecha_aplicacion: string;
   public sistema_inmobilizacion: string;
+  public histologia: string;
+  // Agregar variables faltantes Fecha Defuncion y calculo.
+
 
   _pacienteGroup: any = {
     nombre: [this.nombre, [Validators.required, Validators.minLength(4)]],
@@ -66,7 +69,8 @@ export class PacienteComponent implements OnInit, OnDestroy {
       this.fecha_aplicacion,
       [Validators.required, Validators.minLength(4)]
     ],
-    sistema_inmobilizacion: [this.sistema_inmobilizacion]
+    sistema_inmobilizacion: [this.sistema_inmobilizacion],
+    histologia: [this.histologia]
   };
 
   current = 1;
@@ -168,6 +172,9 @@ export class PacienteComponent implements OnInit, OnDestroy {
     }
     // this.coreService.setLoadingStatus(true);
     this.rxcxProxy.getPaciente(id).subscribe(data => {
+
+      console.log(data);
+
       const tmp = data[0];
 
       tmp.fecha_aplicacion = {
@@ -273,7 +280,8 @@ export class PacienteComponent implements OnInit, OnDestroy {
         cirugia_previa: false,
         fecha_aplicacion: null,
         sistema_inmobilizacion: '0',
-        diagnostico: []
+        diagnostico: [],
+        histologia: '', // Agregar abajo la fecha defuncion
       });
 
       this.paciente.oar = [{}];
@@ -292,7 +300,8 @@ export class PacienteComponent implements OnInit, OnDestroy {
         cirugia_previa: this.paciente.cirugia_previa || false,
         fecha_aplicacion: this.paciente.fecha_aplicacion || '',
         sistema_inmobilizacion: '' + this.paciente.sistema_inmobilizacion || 0,
-        diagnostico: []
+        diagnostico: [],
+        histologia: this.paciente.histologia || ''
       });
 
       // form.get('fecha_aplicacion').setValue('2011-01-01');
@@ -401,7 +410,8 @@ export class PacienteComponent implements OnInit, OnDestroy {
       fecha_aplicacion: this.formPaciente.get('fecha_aplicacion').value,
       sistema_inmobilizacion: this.formPaciente.get('sistema_inmobilizacion')
         .value,
-      diagnosticos: {}
+      diagnosticos: {},
+      histologia: this.formPaciente.get('histologia').value,
     };
 
     // console.log(paciente);

@@ -45,7 +45,7 @@ export class PacientesComponent implements OnInit {
         title: 'HC',
         type: 'string'
       },
-      diags: {
+      diagnosticos: {
         title: 'Diagnosticos',
         type: 'string'
       }
@@ -66,7 +66,9 @@ export class PacientesComponent implements OnInit {
 
   ngOnInit() {
     this.rxcxProxy.getPacientes().subscribe(data => {
+      // console.log(data);
       this.source.load(data);
+      // this.source.setPaging(1, 10, true);
     });
     // this.afs.firestore.settings({ timestampsInSnapshots: true });
     // const collection: AngularFirestoreCollection<any> = this.afs.collection(
