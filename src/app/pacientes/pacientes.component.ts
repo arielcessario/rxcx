@@ -4,6 +4,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { RxCxProxy } from 'rxcx-core';
+import { TestBed } from '@angular/core/testing';
+
 
 @Component({
   selector: 'rxc-pacientes',
@@ -54,6 +56,9 @@ export class PacientesComponent implements OnInit {
 
   allPatients: Array<any> = [];
   source: LocalDataSource = new LocalDataSource();
+  patientsTotal = 0;
+  patientsPerPage = [];
+  // patientsAccessory = 0;
 
   constructor(
     private router: Router,
@@ -67,7 +72,17 @@ export class PacientesComponent implements OnInit {
   ngOnInit() {
     this.rxcxProxy.getPacientes().subscribe(data => {
       // console.log(data);
+      this.patientsTotal = data.length;
       this.source.load(data);
+      const patientsArray = [];
+      let patientsAccessory = 0;
+
+      this.source.getElements().then(function(value) {
+        patientsAccessory = value.length;
+        patientsArray.push(patientsAccessory);
+      });
+
+      this.patientsPerPage = patientsArray;
       // this.source.setPaging(1, 10, true);
     });
     // this.afs.firestore.settings({ timestampsInSnapshots: true });

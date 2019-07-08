@@ -1,15 +1,15 @@
 <nb-card>
-  <nb-card-header>
-      Pacientes
-      <i class="fa fa-download" (click)="export()"></i>
-  </nb-card-header>
+    <nb-card-header>
+        Pacientes
+        <i class="fa fa-download" (click)="export()"></i>
+    </nb-card-header>
 
-  <nb-card-body>
-      <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" 
-      (create)="create()"
-      (edit)="update($event)" 
-      (delete)="onDeleteConfirm($event)"
-      (userRowSelect)="update($event)">
-      </ng2-smart-table>
-  </nb-card-body>
+    <nb-card-body>
+        <div>
+            <label style="font-weight: 600;">Total de Pacientes: {{patientsTotal}}</label>
+        </div>
+        <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (create)="create()" (edit)="update($event)" (delete)="onDeleteConfirm($event)" (userRowSelect)="update($event)">
+        </ng2-smart-table>
+    </nb-card-body>
+    <!-- <nb-card-body>1 - {{patientsPerPage}}, {{patientsTotal}} en total</nb-card-body> -->
 </nb-card>
