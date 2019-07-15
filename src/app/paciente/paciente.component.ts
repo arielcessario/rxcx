@@ -50,6 +50,8 @@ export class PacienteComponent implements OnInit, OnDestroy {
   public fecha_aplicacion: string;
   public sistema_inmobilizacion: string;
   public histologia: string;
+  public fecha_defuncion: string;
+  public sobrevida: string;
   // Agregar variables faltantes Fecha Defuncion y calculo.
 
 
@@ -70,7 +72,12 @@ export class PacienteComponent implements OnInit, OnDestroy {
       [Validators.required, Validators.minLength(4)]
     ],
     sistema_inmobilizacion: [this.sistema_inmobilizacion],
-    histologia: [this.histologia]
+    histologia: [this.histologia],
+    fecha_defuncion: [
+      this.fecha_defuncion,
+      [Validators.minLength(4)]
+    ],
+    sobrevida: [this.sobrevida]
   };
 
   current = 1;
@@ -99,24 +106,24 @@ export class PacienteComponent implements OnInit, OnDestroy {
   };
   validationMessages = {
     nombre: {
-      required: 'Requerido',
+      required: 'Debe ingresar un nombre',
       minlength: 'Mínimo 3 letras',
       maxlength: 'El nombre no puede tener mas de 24 letras'
     },
     apellido: {
-      required: 'Power is required.',
+      required: 'Debe ingresar un apellido.',
       maxlength: 'Sismbolo tiene que tener un máximo de 3 letras'
     },
     hc: {
-      required: 'Debe ingresar un password',
+      required: 'Debe ingresar un HC',
       minlength: 'El password debe tener al menos seis (6) letras y/o números'
     },
     edad: {
-      required: 'Debe ingresar un password',
+      required: 'Debe ingresar una edad',
       minlength: 'El password debe tener al menos seis (6) letras y/o números'
     },
     fechaaplicacion: {
-      required: 'Debe ingresar un password',
+      required: 'Debe ingresar una fecha de aplicación',
       minlength: 'El password debe tener al menos seis (6) letras y/o números'
     }
   };
@@ -183,6 +190,17 @@ export class PacienteComponent implements OnInit, OnDestroy {
         year: new Date(tmp.fecha_aplicacion).getFullYear()
       };
 
+      if (tmp.fecha_defuncion !== null && tmp.fecha_defuncion !== undefined) {
+        tmp.fecha_defuncion = {
+          day: new Date(tmp.fecha_defuncion).getDate(),
+          month: new Date(tmp.fecha_defuncion).getMonth() + 1,
+          year: new Date(tmp.fecha_defuncion).getFullYear()
+        };
+
+        // this.paciente.sobrevida = this.monthDiff(data[0].fecha_aplicacion, data[0].fecha_defuncion);
+      }
+
+
       this.paciente = tmp;
       // console.log(this.paciente);
 
@@ -197,6 +215,15 @@ export class PacienteComponent implements OnInit, OnDestroy {
       this.isNew = false;
     });
   }
+
+
+  // monthDiff(d1, d2) {
+  //   let months;
+  //   months = (d2.getFullYear() - d1.getFullYear()) * 12;
+  //   months -= d1.getMonth() + 1;
+  //   months += d2.getMonth();
+  //   return months <= 0 ? 0 : months;
+  // }
 
   updateCITV(e) {
     this.gtvs[e.uid] = e.val;
@@ -282,6 +309,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
         sistema_inmobilizacion: '0',
         diagnostico: [],
         histologia: '', // Agregar abajo la fecha defuncion
+        fecha_defuncion: null,
       });
 
       this.paciente.oar = [{}];
@@ -301,7 +329,9 @@ export class PacienteComponent implements OnInit, OnDestroy {
         fecha_aplicacion: this.paciente.fecha_aplicacion || '',
         sistema_inmobilizacion: '' + this.paciente.sistema_inmobilizacion || 0,
         diagnostico: [],
-        histologia: this.paciente.histologia || ''
+        histologia: this.paciente.histologia || '',
+        fecha_defuncion: this.paciente.fecha_defuncion || '',
+        sobrevida: this.paciente.sobrevida || '',
       });
 
       // form.get('fecha_aplicacion').setValue('2011-01-01');
@@ -412,6 +442,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
         .value,
       diagnosticos: {},
       histologia: this.formPaciente.get('histologia').value,
+      fecha_defuncion: this.formPaciente.get('fecha_defuncion').value,
     };
 
     // console.log(paciente);
@@ -500,7 +531,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
   }
 
   create(paciente) {
-    //console.log(paciente);
+    // console.log(paciente);
     this.rxcxProxy.createPaciente(paciente).subscribe(r => {
       this.coreService.setToast({
         type: 'success',

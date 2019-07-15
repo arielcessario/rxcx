@@ -1,10 +1,8 @@
 <nb-card *ngIf="(exists && paciente) || isNew">
-  <nb-card-header (click)="open = !open" style="cursor: pointer;">
-    <i class="fa fa-plus-square-o" aria-hidden="true" *ngIf="!open" title="Mostrar detalle"></i>
-    <i class="fa fa-minus-square-o" aria-hidden="true" *ngIf="open" title="Oculatar detalle"></i>
-    Datos: {{ paciente.nombre }} {{ paciente.apellido }} {{ paciente.hc }}
-    {{ getDiagnosticosTitulo() }} {{ oar_name }}
-    <!-- <i
+    <nb-card-header (click)="open = !open" style="cursor: pointer;">
+        <i class="fa fa-plus-square-o" aria-hidden="true" *ngIf="!open" title="Mostrar detalle"></i>
+        <i class="fa fa-minus-square-o" aria-hidden="true" *ngIf="open" title="Oculatar detalle"></i> Datos: {{ paciente.nombre }} {{ paciente.apellido }} {{ paciente.hc }} {{ getDiagnosticosTitulo() }} {{ oar_name }}
+        <!-- <i
       class="fa fa-eye fa-3 pull-right"
       aria-hidden="true"
       *ngIf="!open"
@@ -16,261 +14,272 @@
       *ngIf="open"
       title="Ocultar detalle"
     ></i> -->
-  </nb-card-header>
-  <nb-card-body>
-    <!-- <div > -->
-    <!--
+    </nb-card-header>
+    <nb-card-body>
+        <!-- <div > -->
+        <!--
       <nb-tabset appCollapse [isOpen]="open">
       <nb-tab tabTitle="Datos Personales">
     -->
-    <form [formGroup]="formPaciente" *ngIf="formPaciente" style="max-width:98%; " appCollapse [isOpen]="open">
-      <div class="row">
-        <div class="col-sm-3">
-          <div class="form-group">
-            <h5 class="col-sm-3 col-form-label text-heading" for="inputLastName">
-              Apellido
-            </h5>
-            <input type="text" class="form-control" id="inputLastName" placeholder="Apellido" formControlName="apellido"
-              [ngClass]="{
+        <form [formGroup]="formPaciente" *ngIf="formPaciente" style="max-width:98%; " appCollapse [isOpen]="open">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <h5 class="col-sm-3 col-form-label text-heading" for="inputLastName">
+                            Apellido
+                        </h5>
+                        <input type="text" class="form-control" id="inputLastName" placeholder="Apellido" formControlName="apellido" [ngClass]="{
                 'form-control-danger': formPaciente.controls['apellido'].invalid
               }" />
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <h5 class="col-sm-3 col-form-label text-heading" for="inputFirstName">
-              Nombre
-            </h5>
-            <input type="text" class="form-control" id="inputFirstName" placeholder="Nombre" formControlName="nombre"
-              [ngClass]="{
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <h5 class="col-sm-3 col-form-label text-heading" for="inputFirstName">
+                            Nombre
+                        </h5>
+                        <input type="text" class="form-control" id="inputFirstName" placeholder="Nombre" formControlName="nombre" [ngClass]="{
                 'form-control-danger': formPaciente.controls['nombre'].invalid
               }" />
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <h5 class="col-sm-12 col-form-label text-heading" for="inputLastName">
-              Historia Clínica
-            </h5>
-            <input type="text" class="form-control" id="inputLastName" placeholder="Historia Clínica"
-              formControlName="hc" [ngClass]="{
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <h5 class="col-sm-12 col-form-label text-heading" for="inputLastName">
+                            Historia Clínica
+                        </h5>
+                        <input type="text" class="form-control" id="inputLastName" placeholder="Historia Clínica" formControlName="hc" [ngClass]="{
                 'form-control-danger': formPaciente.controls['hc'].invalid
               }" />
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <h5 class="col-sm-3 col-form-label text-heading" for="inputLastName">
-              Edad
-            </h5>
-            <!--
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <h5 class="col-sm-3 col-form-label text-heading" for="inputLastName">
+                            Edad
+                        </h5>
+                        <!--
               <input type="number" class="form-control input-number" id="inputLastName" placeholder="Edad" formControlName="edad" [ngClass]="{'form-control-danger': formPaciente.controls['edad'].invalid}">
             -->
-            <input type="number" class="form-control input-number" id="inputLastName" placeholder="Edad"
-              formControlName="edad" />
-          </div>
-        </div>
-      </div>
+                        <input type="number" class="form-control input-number" id="inputLastName" placeholder="Edad" formControlName="edad" />
+                    </div>
+                </div>
+            </div>
 
-      <div class="row form-group">
-        <h5 class="col-sm-3 col-form-label text-heading">Sexo</h5>
-        <div class="col-sm-3 d-flex">
-          <label class="custom-control custom-radio">
+            <div class="row form-group">
+                <h5 class="col-sm-3 col-form-label text-heading">Sexo</h5>
+                <div class="col-sm-3 d-flex">
+                    <label class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" formControlName="sexo" value="1" name="sexo" checked />
             <span class="custom-control-indicator"></span>
             <span class="custom-control-description">Femenino</span>
           </label>
-          <label class="custom-control custom-radio">
+                    <label class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" formControlName="sexo" value="0" name="sexo" />
             <span class="custom-control-indicator"></span>
             <span class="custom-control-description">Masculino</span>
           </label>
-        </div>
+                </div>
 
-        <h5 class="col-sm-3 col-form-label text-heading">CITV (cc)</h5>
-        <div class="col-sm-3 form-group">
-          <input type="number" class="form-control input-number" id="citv" placeholder="CITV (cc)"
-            formControlName="citv" [ngClass]="{
+                <h5 class="col-sm-3 col-form-label text-heading">CITV (cc)</h5>
+                <div class="col-sm-3 form-group">
+                    <input type="number" class="form-control input-number" id="citv" placeholder="CITV (cc)" formControlName="citv" [ngClass]="{
               'form-control-danger': formPaciente.controls['citv'].invalid
             }" />
-        </div>
-      </div>
+                </div>
+            </div>
 
-      <div class="form-group row">
-        <h5 class="col-sm-3 col-form-label text-heading">RPA</h5>
-        <div class="col-sm-9 d-flex">
-          <label class="custom-control custom-radio">
+            <div class="form-group row">
+                <h5 class="col-sm-3 col-form-label text-heading">RPA</h5>
+                <div class="col-sm-9 d-flex">
+                    <label class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" formControlName="rpa" value="0" name="rpa" checked />
             <span class="custom-control-indicator"></span>
             <span class="custom-control-description">N/A</span>
           </label>
-          <label class="custom-control custom-radio">
+                    <label class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" formControlName="rpa" value="1" name="rpa" checked />
             <span class="custom-control-indicator"></span>
             <span class="custom-control-description">1</span>
           </label>
-          <label class="custom-control custom-radio">
+                    <label class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" formControlName="rpa" value="2" name="rpa" />
             <span class="custom-control-indicator"></span>
             <span class="custom-control-description">2</span>
           </label>
-          <label class="custom-control custom-radio">
+                    <label class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" formControlName="rpa" value="3" name="rpa" />
             <span class="custom-control-indicator"></span>
             <span class="custom-control-description">3</span>
           </label>
-        </div>
-      </div>
+                </div>
+            </div>
 
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <h5 for="inputFirstName" class="col-form-label text-heading">
-            Diagnóstico
-          </h5>
-          <label>Items en la lista de la izquierda, son los disponibles. En la lista
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <h5 for="inputFirstName" class="col-form-label text-heading">
+                        Diagnóstico
+                    </h5>
+                    <label>Items en la lista de la izquierda, son los disponibles. En la lista
             de la derecha, los seleccionados</label>
-        </div>
-        <div class="form-group col-sm-4 ">
-          <div class="form-control select-box">
-            <input type="text" [(ngModel)]="filterDiags" [ngModelOptions]="{ standalone: true }"
-              placeholder="Buscar..." />
-            <div *ngFor="
+                </div>
+                <div class="form-group col-sm-4 ">
+                    <div class="form-control select-box">
+                        <input type="text" [(ngModel)]="filterDiags" [ngModelOptions]="{ standalone: true }" placeholder="Buscar..." />
+                        <div *ngFor="
                 let d of (diagnosticos
                   | fusejs: filterDiags:{ keys: ['nombre'], threshold: 0.3 });
                 let i = index
               " (click)="addDiagnostico(d, i)">
-              {{ d.nombre }}
-            </div>
-            <!--
+                            {{ d.nombre }}
+                        </div>
+                        <!--
               <div *ngFor="let d of diagnosticos; let i = index;" (click)="addDiagnostico(d, i)">{{d.name}}</div>
             -->
-          </div>
-        </div>
-        <div class="form-group col-sm-5 ">
-          <div class="form-control select-box">
-            <div *ngFor="let d of diagnosticos_seleccionados; let i = index" (click)="removeDiagnostico(d, i)">
-              {{ d.nombre }}
+                    </div>
+                </div>
+                <div class="form-group col-sm-5 ">
+                    <div class="form-control select-box">
+                        <div *ngFor="let d of diagnosticos_seleccionados; let i = index" (click)="removeDiagnostico(d, i)">
+                            {{ d.nombre }}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="form-group row">
-        <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
-          Radioterapia previa
-        </h5>
-        <div class="form-group col-sm-2">
-          <!--
+            <div class="form-group row">
+                <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
+                    Radioterapia previa
+                </h5>
+                <div class="form-group col-sm-2">
+                    <!--
             <input type="checkbox" id="1" formControlName="radioterapiaprevia" [(ngModel)]="radioterapiapreviamodel">
             <label class="label" for="1">{{(radioterapiapreviamodel)?'Si':'No'}}</label>
           -->
-          <rxc-switcher [value]="paciente.radioterapia || 0" [firstValue]="1" [secondValue]="0" [firstValueLabel]="'Si'"
-            [secondValueLabel]="'No'" (valueChange)="switchValue($event, 'radioterapia')"></rxc-switcher>
-        </div>
-        <div class="form-group col-sm-7 ">
-          <textarea class="form-control" rows="1" formControlName="radioterapia_descr"></textarea>
-        </div>
-      </div>
+                    <rxc-switcher [value]="paciente.radioterapia || 0" [firstValue]="1" [secondValue]="0" [firstValueLabel]="'Si'" [secondValueLabel]="'No'" (valueChange)="switchValue($event, 'radioterapia')"></rxc-switcher>
+                </div>
+                <div class="form-group col-sm-7 ">
+                    <textarea class="form-control" rows="1" formControlName="radioterapia_descr"></textarea>
+                </div>
+            </div>
 
-      <div class="form-group row">
-        <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
-          Cirugía previa
-        </h5>
-        <div class="col-sm-2">
-          <rxc-switcher [value]="paciente.cirugia_previa || 0" [firstValue]="1" [secondValue]="0"
-            [firstValueLabel]="'Si'" [secondValueLabel]="'No'" (valueChange)="switchValue($event, 'cirugia_previa')">
-          </rxc-switcher>
-          <!--
+            <div class="form-group row">
+                <h5 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
+                    Cirugía previa
+                </h5>
+                <div class="col-sm-2">
+                    <rxc-switcher [value]="paciente.cirugia_previa || 0" [firstValue]="1" [secondValue]="0" [firstValueLabel]="'Si'" [secondValueLabel]="'No'" (valueChange)="switchValue($event, 'cirugia_previa')">
+                    </rxc-switcher>
+                    <!--
             <input type="checkbox" id="2" formControlName="cirugiaprevia" [(ngModel)]="cirugiapreviamodel">
             <label class="label" for="2">{{(cirugiapreviamodel)?'Si':'No'}}</label>
           -->
-        </div>
-      </div>
+                </div>
+            </div>
 
-      <div class="form-group row">
-        <h5 for="inputLastName" class="col-sm-3 col-form-label text-heading">
-          Fecha de Aplicación
-        </h5>
-        <div class="col-sm-9 btn-group">
-          <input class="form-control" placeholder="dd/mm/aaaa" name="dp" ngbDatepicker #d="ngbDatepicker"
-            formControlName="fecha_aplicacion" [ngClass]="{
+            <div class="form-group row">
+                <h5 for="inputLastName" class="col-sm-3 col-form-label text-heading">
+                    Fecha de Aplicación
+                </h5>
+                <div class="col-sm-9 btn-group">
+                    <input class="form-control" placeholder="dd/mm/aaaa" name="dp" ngbDatepicker #d="ngbDatepicker" formControlName="fecha_aplicacion" [ngClass]="{
               'form-control-danger':
                 formPaciente.controls['fecha_aplicacion'].invalid
             }" />
-          <button class="btn btn-primary btn-group-icon btn-group-divider" (click)="d.toggle()">
+                    <button class="btn btn-primary btn-group-icon btn-group-divider" (click)="d.toggle()">
             <i class="fa fa-calendar" aria-hidden="true"></i>
           </button>
-        </div>
-      </div>
+                </div>
+            </div>
 
-      <div class="form-group row">
-        <h5 class="col-sm-3 col-form-label text-heading">
-          Sistema Inmovilizacion
-        </h5>
-        <div class="col-sm-9 d-flex">
-          <label class="custom-control custom-radio">
+            <div class="form-group row">
+                <h5 class="col-sm-3 col-form-label text-heading">
+                    Sistema Inmovilizacion
+                </h5>
+                <div class="col-sm-9 d-flex">
+                    <label class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" formControlName="sistema_inmobilizacion" value="0"
               name="sistema_inmobilizacion" checked />
             <span class="custom-control-indicator"></span>
             <span class="custom-control-description">Marco</span>
           </label>
-          <label class="custom-control custom-radio">
+                    <label class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" formControlName="sistema_inmobilizacion" value="1"
               name="sistema_inmobilizacion" />
             <span class="custom-control-indicator"></span>
             <span class="custom-control-description">Máscara</span>
           </label>
-        </div>
-      </div>
+                </div>
+            </div>
 
-      <div class="form-group row">
-        <h5 class="col-sm-3 col-form-label text-heading">
-          Histología
-        </h5>
-        <div class="col-sm-9 btn-group">
-          <input class="form-control" placeholder="Histología" name="histologia"
-            formControlName="histologia"  />
-        </div>
-      </div>
-    </form>
-    <!--
+            <div class="form-group row">
+                <h5 class="col-sm-3 col-form-label text-heading">
+                    Histología
+                </h5>
+                <div class="col-sm-9 btn-group">
+                    <input class="form-control" placeholder="Histología" name="histologia" formControlName="histologia" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <h5 for="fecha_defuncion" class="col-sm-3 col-form-label text-heading">
+                    Fecha de Defunción
+                </h5>
+                <div class="col-sm-9 btn-group">
+                    <input class="form-control" placeholder="dd/mm/aaaa" name="dp" ngbDatepicker #d="ngbDatepicker" formControlName="fecha_defuncion" />
+                    <button class="btn btn-primary btn-group-icon btn-group-divider" (click)="d.toggle()">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </button>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <h5 class="col-sm-3 col-form-label text-heading">
+                    Sobrevida en Meses
+                </h5>
+                <div class="col-sm-9 btn-group">
+                    <input class="form-control" placeholder="Sobrevida en Meses" name="sobrevida" formControlName="sobrevida" />
+                </div>
+            </div>
+
+        </form>
+        <!--
       </nb-tab>
         <nb-tab tabTitle="OAR">
 
         </nb-tab>
       </nb-tabset>
     -->
-    <!-- </div> -->
-  </nb-card-body>
+        <!-- </div> -->
+    </nb-card-body>
 </nb-card>
 
 <ng-container *ngIf="exists">
-  <rxc-volumen *ngFor="let vol of volumenes" [volumen]="vol" (eliminarVolumen)="eliminarVolumen($event)"
-    (updateCITV)="updateCITV($event)"></rxc-volumen>
+    <rxc-volumen *ngFor="let vol of volumenes" [volumen]="vol" (eliminarVolumen)="eliminarVolumen($event)" (updateCITV)="updateCITV($event)"></rxc-volumen>
 </ng-container>
 
 <rxc-oar *ngIf="paciente.oar && paciente.seguimiento" [oar]="paciente.oar[0]" [seguimiento]="paciente.seguimiento[0]">
 </rxc-oar>
 
 <div class="pull-right floating-menu">
-  <div id="open-actions-menus">
-    <i class="fa fa-ellipsis-v fa-3" aria-hidden="true"></i>
-  </div>
+    <div id="open-actions-menus">
+        <i class="fa fa-ellipsis-v fa-3" aria-hidden="true"></i>
+    </div>
 
-  <div id="actions-menu">
-    <!--
+    <div id="actions-menu">
+        <!--
       <button class="btn btn-primary btn-with-icon" (click)="save()" [disabled]="_savingButton" title="Guardar Cambios">
         <i class="fa fa-floppy-o" aria-hidden="true"></i>
       </button>
     -->
-    <button class="btn btn-primary btn-with-icon" (click)="save()" title="Guardar Cambios">
+        <button class="btn btn-primary btn-with-icon" (click)="save()" title="Guardar Cambios">
       <i class="fa fa-floppy-o" aria-hidden="true"></i>
     </button>
-    <button class="btn btn-danger btn-with-icon" (click)="nuevoVolumen()" title="Nuevo Volumen">
+        <button class="btn btn-danger btn-with-icon" (click)="nuevoVolumen()" title="Nuevo Volumen">
       <i class="fa fa-plus" aria-hidden="true"></i>
     </button>
-    <button class="btn btn-success btn-with-icon" (click)="volver()" title="Volver">
+        <button class="btn btn-success btn-with-icon" (click)="volver()" title="Volver">
       <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
     </button>
-  </div>
+    </div>
 </div>

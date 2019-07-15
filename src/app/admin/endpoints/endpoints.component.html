@@ -1,11 +1,15 @@
 <nb-card>
-  <nb-card-header>
-    Endpoints
-    <!-- <i class="fa fa-download" (click)="export()"></i> -->
-  </nb-card-header>
+    <nb-card-header>
+        Endpoints
+        <!-- <i class="fa fa-download" (click)="export()"></i> -->
+    </nb-card-header>
 
-  <nb-card-body>
-    <ng2-smart-table [settings]="settings" [source]="source" (createConfirm)="create($event)" (editConfirm)="update($event)">
-    </ng2-smart-table>
-  </nb-card-body>
+    <nb-card-body>
+        <div class="d-flex justify-content-between">
+            <label style="font-weight: 600;">Página {{upToPatientsBegining}} de {{upToPatients}}</label>
+            <label style="font-weight: 600;">Total: {{patientsTotal}}</label>
+        </div>
+        <ng2-smart-table [settings]="settings" [source]="source" (createConfirm)="create($event)" (editConfirm)="update($event)">
+        </ng2-smart-table>
+    </nb-card-body>
 </nb-card>

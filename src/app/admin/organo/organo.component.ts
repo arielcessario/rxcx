@@ -108,9 +108,10 @@ export class OrganoComponent implements OnInit, OnDestroy {
           for (let i = 0; i < data.length; i++) {
             const organo = data[i];
             // Tocar esta parte para que muestre 3 decimales..
+
             constraints.push({
               volumen: Math.round(organo.volumen * 100) / 100,
-              constraint: Math.round(organo.constraint * 100) / 100,
+              constraint: Math.round(organo.constraint * 1000) / 1000,
               endpoint_id: organo.endpoint_id
             });
 
@@ -140,6 +141,11 @@ export class OrganoComponent implements OnInit, OnDestroy {
         this.organo.fracciones = [];
       }
     });
+  }
+
+  round(value: string, decimals: number) {
+    const aux = value + 'e' + decimals;
+    return Number(Math.round(parseInt(aux)) + 'e-' + decimals);
   }
 
   getSelectedUnit(uid) {

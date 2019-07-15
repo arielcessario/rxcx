@@ -14,6 +14,7 @@ import { TestBed } from '@angular/core/testing';
 })
 export class PacientesComponent implements OnInit {
   settings = {
+    pager: {display: true},
     mode: 'external',
     actions: {
       delete: true
@@ -58,7 +59,8 @@ export class PacientesComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   patientsTotal = 0;
   patientsPerPage = [];
-  // patientsAccessory = 0;
+  upToPatients = 0;
+  upToPatientsBegining = 0;
 
   constructor(
     private router: Router,
@@ -83,7 +85,21 @@ export class PacientesComponent implements OnInit {
       });
 
       this.patientsPerPage = patientsArray;
-      // this.source.setPaging(1, 10, true);
+      this.settings.pager.display = true;
+
+      this.source.onChanged().subscribe(e => {
+        setTimeout(() => {
+          const upToPatientsAccesory = (this.source.getPaging().page) * (this.source.getPaging().perPage);
+
+          if (upToPatientsAccesory > this.patientsTotal) {
+            this.upToPatients = this.patientsTotal;
+            this.upToPatientsBegining = upToPatientsAccesory - this.source.getPaging().perPage + 1;
+          } else {
+            this.upToPatients = upToPatientsAccesory;
+            this.upToPatientsBegining = this.upToPatients - this.source.getPaging().perPage + 1;
+          }
+        });
+      });
     });
     // this.afs.firestore.settings({ timestampsInSnapshots: true });
     // const collection: AngularFirestoreCollection<any> = this.afs.collection(

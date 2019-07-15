@@ -12,6 +12,7 @@ export class EndpointsComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
 
   settings = {
+    pager: {display: true},
     actions: {
       edit: true,
       delete: false
@@ -39,11 +40,43 @@ export class EndpointsComponent implements OnInit {
       }
     }
   };
+
+  patientsTotal = 0;
+  patientsPerPage = [];
+  upToPatients = 0;
+  upToPatientsBegining = 0;
+
   constructor(private coreService: CoreService, private rxcxProxy: RxCxProxy) {}
 
   ngOnInit() {
     this.rxcxProxy.getEndpoints().subscribe(data => {
+      this.patientsTotal = data.length;
       this.source.load(data);
+      const patientsArray = [];
+      let patientsAccessory = 0;
+
+      this.source.getElements().then(function(value) {
+        patientsAccessory = value.length;
+        patientsArray.push(patientsAccessory);
+      });
+
+      this.patientsPerPage = patientsArray;
+      this.settings.pager.display = true;
+
+      this.source.onChanged().subscribe(e => {
+        setTimeout(() => {
+          const upToPatientsAccesory = (this.source.getPaging().page) * (this.source.getPaging().perPage);
+
+          if (upToPatientsAccesory > this.patientsTotal) {
+            this.upToPatients = this.patientsTotal;
+            this.upToPatientsBegining = upToPatientsAccesory - this.source.getPaging().perPage + 1;
+          } else {
+            this.upToPatients = upToPatientsAccesory;
+            this.upToPatientsBegining = this.upToPatients - this.source.getPaging().perPage + 1;
+          }
+        });
+      });
+
     });
   }
 
