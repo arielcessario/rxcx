@@ -171,6 +171,7 @@ export class DefinicionComponent implements OnInit, OnDestroy {
   }
 
   loadedImage(e, index) {
+    console.log(e);
     this.images[index] = e.originalName;
     console.log(this.images);
   }
