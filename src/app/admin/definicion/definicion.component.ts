@@ -80,6 +80,9 @@ export class DefinicionComponent implements OnInit, OnDestroy {
         this._id = this.id;
         this.rxcxProxy.getDefinicion(this.id).subscribe(data => {
           this.definicion = data[0];
+          this.definicion.titulo = decodeURIComponent(data[0].titulo);
+          this.definicion.descripcion = decodeURIComponent(data[0].descripcion);
+
           this.form = this.buildForm(this.form, this._definicionGroup);
           this.rxcxProxy.getDefinicionImagenes(this.id).subscribe(imagenes => {
             this.images = [];
@@ -97,8 +100,8 @@ export class DefinicionComponent implements OnInit, OnDestroy {
   save() {
     delete this.definicion.uid;
 
-    this.definicion.titulo = this.form.get('titulo').value;
-    this.definicion.descripcion = this.form.get('descripcion').value;
+    this.definicion.titulo = encodeURIComponent(this.form.get('titulo').value);
+    this.definicion.descripcion = encodeURIComponent(this.form.get('descripcion').value);
     // console.log(this.definicion);
     if (this._id === '0') {
       this.create();

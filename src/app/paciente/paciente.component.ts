@@ -199,7 +199,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
 
         // this.paciente.sobrevida = this.monthDiff(data[0].fecha_aplicacion, data[0].fecha_defuncion);
       }
-
+      // this.sobrevida = data[0].sobrevida;
 
       this.paciente = tmp;
       // console.log(this.paciente);
@@ -226,19 +226,20 @@ export class PacienteComponent implements OnInit, OnDestroy {
   // }
 
   updateCITV(e) {
-    this.gtvs[e.uid] = e.val;
-    this.citv = 0;
+    // console.log(e);
+    // this.gtvs[e.uid] = e.val;
+    // this.citv = 0;
 
-    const keys = Object.getOwnPropertyNames(this.gtvs);
-    for (let i = 0; i < keys.length; i++) {
-      this.citv = this.citv + this.gtvs[keys[i]];
-    }
+    // const keys = Object.getOwnPropertyNames(this.gtvs);
+    // for (let i = 0; i < keys.length; i++) {
+    //   this.citv = this.citv + this.gtvs[keys[i]];
+    // }
 
 
-    setTimeout(() => {
-      this.formPaciente.get('citv').setValue(this.citv);
-      this.paciente['citv'] = this.citv;
-    }, 0);
+    // setTimeout(() => {
+    //   this.formPaciente.get('citv').setValue(this.citv);
+    //   this.paciente['citv'] = this.citv;
+    // }, 0);
   }
 
   addDiagnostico(d, i) {
