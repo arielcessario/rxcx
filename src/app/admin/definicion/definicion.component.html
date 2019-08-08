@@ -1,13 +1,13 @@
 <nb-card>
     <nb-card-header>Definición </nb-card-header>
     <nb-card-body>
-        <form [formGroup]="form" *ngIf="form">
+        <form #f="ngForm" novalidate>
             <div class="row">
                 <div class="form-group col-sm-12">
                     <h5 class="col-sm-3 col-form-label text-heading" for="nombre">
                         Título
                     </h5>
-                    <input type="text" class="form-control" id="titulo" placeholder="Titulo" formControlName="titulo" />
+                    <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Titulo" [(ngModel)]="definicion2.titulo" ngModel />
                 </div>
             </div>
 
@@ -25,32 +25,11 @@
                     <h5 class="col-sm-10 col-form-label text-heading" for="nombre">
                         Descripción
                     </h5>
-                    <textarea class="form-control" rows="10" formControlName="descripcion"></textarea>
+                    <textarea class="form-control" rows="10" id="descripcion" name="descripcion" [(ngModel)]="definicion2.descripcion" ngModel></textarea>
                 </div>
             </div>
         </form>
-        <!--
-      <div class="row">
 
-
-        <div class="form-group col-sm-12">
-
-
-
-          <button class="btn btn-success btn-demo" (click)="save()">Guardar</button>
-
-
-
-          <button class="btn btn-danger btn-demo" (click)="volver()">Volver</button>
-
-
-
-        </div>
-
-
-
-      </div>
-    -->
     </nb-card-body>
 </nb-card>
 
@@ -60,21 +39,11 @@
     </div>
 
     <div id="actions-menu">
-        <!--
-      <button class="btn btn-primary btn-with-icon" (click)="save()" [disabled]="_savingButton" title="Guardar Cambios">
-
-
-        <i class="fa fa-floppy-o" aria-hidden="true"></i>
-
-
-
-      </button>
-    -->
         <button class="btn btn-primary btn-with-icon" (click)="save()" title="Guardar Cambios">
-      <i class="fa fa-floppy-o" aria-hidden="true"></i>
-    </button>
+        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      </button>
         <button class="btn btn-success btn-with-icon" (click)="volver()" title="Volver">
-      <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-    </button>
+        <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+      </button>
     </div>
 </div>
