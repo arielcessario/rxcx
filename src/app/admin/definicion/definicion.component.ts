@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
-import { Definicion } from '../../shared/model/definicion';
+// import { Definicion } from '../../shared/model/definicion';
 
 
 @Component({
@@ -16,7 +16,9 @@ import { Definicion } from '../../shared/model/definicion';
 })
 export class DefinicionComponent implements OnInit, OnDestroy {
 
-  definicion2: Definicion = new Definicion();
+  // definicion2: Definicion = new Definicion();
+  definicion2: any = {};
+  
   imagesPath = environment.imagesPath;
 
   // Nombres de las Imagenes
@@ -41,7 +43,7 @@ export class DefinicionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private coreService: CoreService,
     private rxcxProxy: RxCxProxy
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Si tengo un id lo uso para buscar, en caso contrario, es un definicion vacío.

@@ -1,4 +1,4 @@
-<nb-card *ngIf="(exists && paciente) || isNew">
+<nb-card *ngIf="(exists && paciente.nombre !== '' && paciente.apellido !== '') || isNew">
     <nb-card-header (click)="open = !open" style="cursor: pointer;">
         <i class="fa fa-plus-square-o" aria-hidden="true" *ngIf="!open" title="Mostrar detalle"></i>
         <i class="fa fa-minus-square-o" aria-hidden="true" *ngIf="open" title="Oculatar detalle"></i> Datos: {{ paciente.nombre }} {{ paciente.apellido }} {{ paciente.hc }} {{ getDiagnosticosTitulo() }} {{ oar_name }}

@@ -149,7 +149,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
 
       if (this.id !== '0') {
         this._id = this.id;
-
+        console.log('entra');
         this.getData();
       } else {
         this.formPaciente = this.buildForm(
@@ -311,6 +311,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
         diagnostico: [],
         histologia: '', // Agregar abajo la fecha defuncion
         fecha_defuncion: null,
+        sobrevida: '',
       });
 
       this.paciente.oar = [{}];
