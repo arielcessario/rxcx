@@ -140,7 +140,7 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
     private volumenService: VolumenService,
     private logger: Logger,
     private rxcxProxy: RxCxProxy
-  ) {}
+  ) { }
 
   ngOnInit() {
     // console.log(this.volumen);
@@ -156,10 +156,13 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
       if (this.volumen.organos) {
         this.partes_seleccionadas = this.volumen.organos;
         for (let i = 0; i < this.volumen.organos.length; i++) {
-          this.checkConstraint(this.volumen.organos[i]);
+          this.volumen.organos[i] = this.checkConstraint(this.volumen.organos[i]);
           this.volumen.organos[i].volumenes = this.addVolumenesPartes(
             this.volumen.organos[i]
           );
+
+          console.log(this.volumen.organos[i]);
+
         }
       }
     });
@@ -182,7 +185,7 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnChanges(e) {}
+  ngOnChanges(e) { }
 
   ngOnDestroy() {
     this.saveSubs.unsubscribe();
@@ -280,14 +283,14 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
 
   checkConstraint(p) {
     const limitesVolumenes = [];
-    console.log(this.reglasOrganos);
 
     const cantFracciones = this.formVolumen.get('cantidadFracciones').value;
+
     for (let i = 0; i < this.reglasOrganos.length; i++) {
       if (
         p.organo_id === this.reglasOrganos[i].organo_id &&
         parseFloat(cantFracciones) ===
-          parseFloat(this.reglasOrganos[i].fraccion)
+        parseFloat(this.reglasOrganos[i].fraccion)
       ) {
         limitesVolumenes.push(this.reglasOrganos[i].constraint);
       }
@@ -301,19 +304,24 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
 
     p.endpoint = '';
     for (let i = 0; i < this.reglasOrganos.length; i++) {
+
       if (
         this.reglasOrganos[i].organo_id === p.organo_id &&
         parseFloat(cantFracciones) ===
-          parseFloat(this.reglasOrganos[i].fraccion) &&
-        this.reglasOrganos[i].constraint < p.constraint
+        parseFloat(this.reglasOrganos[i].fraccion) &&
+        parseFloat(this.reglasOrganos[i].constraint) < parseFloat(p.constraint)
       ) {
+
         p.endpoint = this.reglasOrganos[i].endpoint;
       }
     }
+
+    return p;
   }
 
   removeParte(d, i) {
     this.partes_seleccionadas.splice(i, 1);
+    this.volumen.organos.splice(i, 1);
   }
 
   buildForm(form: FormGroup, group: any): FormGroup {
@@ -477,7 +485,7 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
   calcCantidadFracciones() {
     const resp =
       this.formVolumen.get('dosisTotalGy').value /
-        this.formVolumen.get('dosisFraccionGy').value || 0;
+      this.formVolumen.get('dosisFraccionGy').value || 0;
     this.formVolumen
       .get('cantidadFracciones')
       .setValue(Math.round(resp * 1000) / 1000);
@@ -496,7 +504,7 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
     // solo 3 decimales a todos
     const resp =
       this.formVolumen.get('dosisMaximaGy').value /
-        this.formVolumen.get('dosisTotalGy').value || 0;
+      this.formVolumen.get('dosisTotalGy').value || 0;
     this.formVolumen
       .get('indiceHomogeneidad')
       .setValue(Math.round(resp * 1000) / 1000);
@@ -505,7 +513,7 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
   calcIndConformidad() {
     const resp =
       this.formVolumen.get('volumenIsodosisPrescripcion').value /
-        this.formVolumen.get('volumenPTV').value || 0;
+      this.formVolumen.get('volumenPTV').value || 0;
     this.formVolumen
       .get('indiceConformidad')
       .setValue(Math.round(resp * 1000) / 1000);
@@ -515,8 +523,8 @@ export class VolumenComponent implements OnInit, OnChanges, OnDestroy {
     const resp =
       (this.formVolumen.get('volumenIsodosisPrescripcionPorc').value *
         this.formVolumen.get('volumenPTV').value) /
-        100 /
-        this.formVolumen.get('volumenIsodosis50').value || 0;
+      100 /
+      this.formVolumen.get('volumenIsodosis50').value || 0;
     this.formVolumen
       .get('indiceGradiente')
       .setValue(Math.round(resp * 1000) / 1000);

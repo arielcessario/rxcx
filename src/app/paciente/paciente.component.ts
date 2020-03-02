@@ -74,8 +74,7 @@ export class PacienteComponent implements OnInit, OnDestroy {
     sistema_inmobilizacion: [this.sistema_inmobilizacion],
     histologia: [this.histologia],
     fecha_defuncion: [
-      this.fecha_defuncion,
-      [Validators.minLength(4)]
+      this.fecha_defuncion
     ],
     sobrevida: [this.sobrevida]
   };
@@ -317,6 +316,10 @@ export class PacienteComponent implements OnInit, OnDestroy {
       this.paciente.oar = [{}];
       this.paciente.seguimiento = [{}];
     } else {
+
+      if (isNaN(this.paciente.fecha_defuncion.day)) {
+        this.paciente.fecha_defuncion = null;
+      }
       form.setValue({
         nombre: this.paciente.nombre || '',
         apellido: this.paciente.apellido || '',
@@ -332,9 +335,12 @@ export class PacienteComponent implements OnInit, OnDestroy {
         sistema_inmobilizacion: '' + this.paciente.sistema_inmobilizacion || 0,
         diagnostico: [],
         histologia: this.paciente.histologia || '',
-        fecha_defuncion: this.paciente.fecha_defuncion || '',
+        fecha_defuncion: this.paciente.fecha_defuncion || null,
         sobrevida: this.paciente.sobrevida || '',
       });
+
+      console.log('Fecha', this.paciente.fecha_defuncion);
+
 
       // form.get('fecha_aplicacion').setValue('2011-01-01');
 
@@ -419,12 +425,15 @@ export class PacienteComponent implements OnInit, OnDestroy {
   save() {
     this._savingButton = true;
 
+
     if (this.formPaciente.invalid) {
       // this.coreService.setToast(
       //   'error',
       //   'Campos obligatorios',
       //   'Por favor complete todos los campos obligatorios'
       // );
+      console.log(this.formPaciente);
+
       return;
     }
 
@@ -595,4 +604,5 @@ export class PacienteComponent implements OnInit, OnDestroy {
     this.id = '';
     this.volumenes = [];
   }
+
 }

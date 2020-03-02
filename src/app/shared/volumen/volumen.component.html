@@ -39,7 +39,7 @@
               Imagenes
             </h5>
             <div class="d-flex flex-row justify-content-around">
-              <div class="form-group col-sm-1 col-xs-12" *ngFor="let img of [0, 1, 2]; let i = index">
+              <div class="form-group col-sm-1 col-xs-12" *ngFor="let img of [0, 1, 2]; let i = index;">
                 <ac-upload [img]="
                     imagenes['img0' + (i + 1)]
                       ? imagenes['img0' + (i + 1)]
@@ -373,8 +373,8 @@
             <div *ngFor="
                 let d of (partes
                   | fusejs: filterDiags:{ keys: ['nombre'], threshold: 0.3 });
-                let i = index
-              " (click)="addParte(d, i)">
+                let i = index;
+              " (click)="addParte(d, i);">
               {{ d.nombre }}
             </div>
             <!--
@@ -384,7 +384,7 @@
         </div>
       </div>
       <h5>Partes Seleccionadas</h5>
-      <div class="form-group row" *ngFor="let p of volumen.organos; let i = index">
+      <div class="form-group row" *ngFor="let p of volumen.organos; let i = index;">
         <h1 for="inputFirstName" class="col-sm-3 col-form-label text-heading">
           <b>{{ p.nombre }}</b>
         </h1>
