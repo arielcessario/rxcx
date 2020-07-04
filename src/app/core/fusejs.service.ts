@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as Fuse from 'fuse.js';
-import FuseOptions = Fuse.FuseOptions;
+//import FuseOptions = Fuse.FuseOptions;
 
 // import _set = require('lodash.set');
 // import _get = require('lodash.get');
 import * as _ from 'lodash';
 
-export interface AngularFusejsOptions extends FuseOptions<any> {
+//export interface AngularFusejsOptions extends FuseOptions<any> {
+export interface AngularFusejsOptions {
   supportHighlight?: boolean;
   fusejsHighlightKey?: string;
   fusejsScoreKey?: string;
@@ -18,13 +19,13 @@ export interface AngularFusejsOptions extends FuseOptions<any> {
 export class FusejsService {
   private defaultOptions: AngularFusejsOptions = {
     supportHighlight: true,
-    shouldSort: false,
-    threshold: 0.6,
-    location: 0,
-    distance: 100,
-    maxPatternLength: 32,
-    minMatchCharLength: 2,
-    includeScore: true,
+    //shouldSort: false,
+    //threshold: 0.6,
+    //location: 0,
+    //distance: 100,
+    //maxPatternLength: 32,
+    //minMatchCharLength: 2,
+    //includeScore: true,
     minSearchTermLength: 3,
     fusejsHighlightKey: 'fuseJsHighlighted',
     fusejsScoreKey: 'fuseJsScore'
@@ -44,14 +45,14 @@ export class FusejsService {
 
     if (searchTerms && searchTerms.length >= fuseOptions.minSearchTermLength) {
       if (fuseOptions.supportHighlight) {
-        fuseOptions.includeMatches = true;
+        //fuseOptions.includeMatches = true;
       }
 
-      let fuse = new Fuse(list, fuseOptions);
-      result = fuse.search(searchTerms);
-      if (fuseOptions.supportHighlight) {
-        result = this.handleHighlight(result, fuseOptions);
-      }
+      //let fuse = new Fuse(list, fuseOptions);
+      // result = fuse.search(searchTerms);
+      // if (fuseOptions.supportHighlight) {
+      //   result = this.handleHighlight(result, fuseOptions);
+      // }
     } else {
       result = this.deepClone(list);
 
@@ -76,11 +77,11 @@ export class FusejsService {
   }
 
   private handleHighlight(result, options: AngularFusejsOptions) {
-    if (options.maximumScore && options.includeScore) {
-      result = result.filter(matchObject => {
-        return matchObject.score <= options.maximumScore;
-      });
-    }
+    // if (options.maximumScore && options.includeScore) {
+    //   result = result.filter(matchObject => {
+    //     return matchObject.score <= options.maximumScore;
+    //   });
+    // }
 
     return result.map(matchObject => {
       const item = this.deepClone(matchObject.item);

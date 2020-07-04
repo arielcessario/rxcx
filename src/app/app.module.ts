@@ -104,7 +104,7 @@ const projectConfig = {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    NgbModule.forRoot(),
+    NgbModule,
     NbThemeModule.forRoot({ name: 'default' }),
     NbLayoutModule,
     NbSidebarModule,

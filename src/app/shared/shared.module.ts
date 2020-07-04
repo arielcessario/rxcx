@@ -43,7 +43,7 @@ import { SwitcherComponent } from './switcher/switcher.component';
     NbActionsModule,
     NbUserModule,
     NbSearchModule,
-    NgbModule.forRoot(),
+    NgbModule,
     AcCoreModule
   ],
   exports: [
